@@ -1,9 +1,8 @@
 # Parking Lot Occupancy Estimation Using Deep Learning
 
 **Deep Learning Course Project - Fall 2025**  
-**Author:** Aminu Yiwere  
-**Student ID:** [Your ID]  
-**Institution:** [Your University]  
+**Authors:** Aminu Yiwere , Olatunji Olagundoye  
+**Institution:** Northeastern University, Vancouver.  
 **Course:** Deep Learning  
 **GitHub Repository:** [https://github.com/0x1AY/Parking-Lot-Occupancy-Estimation-.git](https://github.com/0x1AY/Parking-Lot-Occupancy-Estimation-.git)
 
@@ -33,23 +32,31 @@ This project develops an automated parking lot occupancy detection and estimatio
 
 ### Problem Statement
 
-Urban areas face critical parking management challenges:
+Parking scarcity in urban and suburban areas persists as a key challenge, intensifying traffic congestion, vehicle emissions, and drivers' time loss. Major retailers like Walmart act as vital shopping and community hubs, with outdoor parking lots enduring high demand that causes inefficient space use and customer discontent. Traditional management methods, reliant on ground sensors or manual counts, are costly, limited in scale, and impractical for large retail sites.
 
-- **Traffic Congestion**: Drivers spend an average of 17 hours per year searching for parking
-- **Environmental Impact**: Unnecessary cruising for parking contributes to increased emissions
-- **Economic Losses**: Wasted fuel and time cost billions annually
-- **User Frustration**: Poor parking availability information leads to stress and inefficiency
-- **Infrastructure Underutilization**: Lack of real-time data prevents optimal parking space usage
+Satellite imagery offers a scalable means for periodic monitoring, yet manual analysis is tedious and error-prone, while automated tools underperform against variables such as variable lighting, weather, occlusions (e.g., trees, shadows), and resolution inconsistencies. This project implements a deep learning strategy to surmount these barriers, enabling automated vehicle detection and occupancy estimation from satellite images.
+
+Key challenges addressed:
+
+- **Traffic Congestion**: Parking scarcity intensifies traffic congestion and wastes drivers' time
+- **Environmental Impact**: Unnecessary cruising for parking contributes to increased vehicle emissions
+- **Economic Losses**: Wasted fuel and time from "parking hunting" causes significant economic losses
+- **Infrastructure Inefficiency**: Traditional sensor-based methods are costly and limited in scale
+- **Data Gaps**: Manual analysis is tedious and error-prone; automated tools struggle with real-world variations
 
 ### Solution
 
-This project implements a computer vision-based parking occupancy detection system that analyzes satellite imagery from Google Static Maps API to:
+This project implements a deep learning-based parking occupancy detection system that analyzes satellite imagery from Google Static Maps API to address data gaps and support evidence-based urban planning. The system:
 
 1. **Detects Multiple Objects**: Identifies cars, parking stalls, lot boundaries, and other objects using YOLOv11
 2. **Estimates Occupancy**: Analyzes the spatial relationship between detected cars and parking stalls
-3. **Provides Real-Time Information**: Processes satellite images to give instant occupancy status
+3. **Provides On-Demand Reports**: Processes satellite images from archival imagery for occupancy analysis
 4. **Scales Efficiently**: Leverages Google Static Maps API for wide-area coverage
-5. **Offers Visual Insights**: Generates annotated visualizations showing detection results
+5. **Supports Urban Planning**: Enables historical occupancy trend analysis for infrastructure decisions
+6. **Reduces Resource Waste**: Aims at reducing wasted resources during "parking hunting" [7]
+7. **Enables Dynamic Solutions**: Potential for dynamic pricing based on demand and real-time occupancy estimation
+
+The approach addresses traditional limitations by using scalable satellite imagery instead of costly ground sensors, achieving superior accuracy over conventional computer vision methods through deep learning trained on diverse datasets.
 
 ---
 
@@ -188,35 +195,61 @@ The dataset provides balanced representation across different object types, enab
 
 ### Approach Overview
 
-This project employs a **single-stage object detection approach** using the state-of-the-art YOLOv11 (You Only Look Once) architecture for real-time parking occupancy estimation.
+Inspired by the fusion-based segmentation approach [1], this project develops a deep learning system that:
+
+1. Inputs latitude/longitude coordinates of parking lots (e.g., Canadian Walmart locations)
+2. Fetches historical satellite images via Google Static Maps API
+3. Processes them to output occupancy reports (e.g., percentage occupied, visualized heatmap)
+
+This project employs a **YOLO-based object detection approach** using YOLOv11 (You Only Look Once) architecture for efficient parking occupancy estimation from satellite imagery.
 
 ### Technical Pipeline
 
 ```
-Input Image → YOLOv11 Detection → Object Classification → Occupancy Analysis → Output Visualization
+Coordinates Input → API Image Retrieval → Preprocessing & Augmentation → YOLOv11 Detection → Occupancy Calculation → Report Generation
 ```
 
-#### Stage 1: Object Detection with YOLOv11
+#### Stage 1: Data Acquisition and Preprocessing
+
+**Image Retrieval:**
+
+- Input: Latitude/longitude coordinates of parking lots
+- API: Google Static Maps API retrieves zoomed historical satellite view (e.g., 640x640 pixels at scale=1)
+- Format: High-resolution satellite imagery (up to 0.5m/pixel)
+
+**Preprocessing:**
+
+- Normalization of pixel values
+- Augmentation for robustness: brightness adjustments, shadows, weather variations
+- Libraries: OpenCV and Albumentations
+
+#### Stage 2: Object Detection with YOLOv11
 
 **Why YOLOv11?**
 
-YOLOv11 is chosen for its superior characteristics:
+YOLOv11 is chosen for its superior characteristics inspired by efficient CNN-based detection [6]:
 
-- **Real-Time Performance**: Processes images at high FPS for instant feedback
+- **Real-Time Performance**: Enables efficient inference for on-demand reports
+- **Computational Efficiency**: Trainable on modest GPUs
 - **High Accuracy**: State-of-the-art detection precision
-- **Multi-Object Detection**: Simultaneously detects cars, stalls, boundaries, and objects
-- **Efficient Architecture**: Optimized for both accuracy and speed
+- **Multi-Object Detection**: Simultaneously detects cars, parking stalls, boundaries, and objects
 - **End-to-End Learning**: Single network for detection and classification
+
+**Fine-tuning Approach:**
+
+- YOLOv11 model fine-tuned on custom dataset and APKLOT datasets
+- Identifies vehicles and parking spots via bounding boxes
+- Unlike baseline U-Net segmentation methods [1], YOLO enables efficient inference for on-demand reports
 
 **Detection Process:**
 
-1. **Input**: 640x640 RGB parking lot image
+1. **Input**: 640x640 RGB satellite parking lot image
 2. **Feature Extraction**: YOLOv11 backbone extracts multi-scale features
 3. **Object Detection**: Identifies and localizes all objects with bounding boxes
 4. **Classification**: Assigns class labels (car, stall, lot_boundary, objects)
 5. **Confidence Scoring**: Provides confidence scores for each detection
 
-#### Stage 2: Occupancy Estimation
+#### Stage 3: Occupancy Calculation
 
 **Algorithm:**
 
@@ -254,26 +287,29 @@ For each parking stall detected:
 
 ### Training Strategy
 
-- **Transfer Learning**: Fine-tune pre-trained YOLOv11 weights on custom dataset
+- **Transfer Learning**: Fine-tune pre-trained YOLOv11 weights on custom dataset and APKLOT dataset
+- **Pre-training**: Leverage APKLOT dataset (500 global satellite images with 7,000+ polygon annotations) for improved model resilience
 - **Data Augmentation**:
   - Mosaic augmentation
   - Random scaling and cropping
   - Color jittering (brightness, contrast, saturation)
   - Horizontal flipping
   - Blur and noise addition
-- **Loss Function**: Combined loss (box regression + objectness + classification)
-- **Optimizer**: AdamW with weight decay
-- **Learning Rate Schedule**: Cosine annealing with warm-up
+  - Shadow and weather condition variations
+- **Loss Function**: Focal loss for addressing imbalanced datasets (inspired by dense object detection approaches)
+- **Optimizer**: Adam optimizer
+- **Learning Rate Schedule**: Adaptive learning rate with warm-up
+- **Training Environment**: Modest GPUs (computationally efficient approach)
 
 ### Performance Metrics
 
 #### Detection Metrics
 
-- **mAP (mean Average Precision)**: Overall detection accuracy across all classes
+- **mAP@0.5**: Mean Average Precision at IoU threshold 0.5 (primary metric)
+- **IoU (Intersection over Union)**: Bounding box accuracy metric
 - **Precision**: Ratio of correct positive predictions
 - **Recall**: Ratio of detected objects among all ground truth objects
 - **F1-Score**: Harmonic mean of precision and recall
-- **IoU**: Intersection over Union for bounding box accuracy
 
 #### Occupancy Metrics
 
@@ -284,11 +320,14 @@ For each parking stall detected:
 
 ### Advantages of This Approach
 
-✅ **End-to-End Solution**: Single model handles all detection tasks  
-✅ **Real-Time Capable**: Fast inference suitable for live video streams  
-✅ **Robust to Variations**: Handles different lighting, weather, and angles  
-✅ **Scalable**: Can process multiple parking lots simultaneously  
-✅ **Interpretable**: Visual bounding boxes show detection reasoning
+✅ **End-to-End Solution**: Single YOLO model handles all detection tasks  
+✅ **Computational Efficiency**: Trainable on modest GPUs, suitable for on-demand reports  
+✅ **Robust to Variations**: Handles variable lighting, weather, occlusions, and resolution inconsistencies  
+✅ **Scalable**: Satellite imagery approach enables monitoring multiple locations  
+✅ **Interpretable**: Visual bounding boxes and attention maps show detection reasoning  
+✅ **Superior Accuracy**: Deep learning achieves better performance than conventional computer vision  
+✅ **Historical Analysis**: Supports long-term occupancy trend analysis from archival imagery  
+✅ **Urban Planning Support**: Provides evidence-based insights for infrastructure decisions
 
 ---
 
@@ -980,102 +1019,93 @@ _(To be added after training)_
 
 ## 📅 Updated Timeline / Milestones
 
-### Phase 3: Model Training & Optimization (Weeks 5-7)
+### Week 1 (September 22-28, 2025)
 
-**Timeline:** November 6 - November 24, 2025
+**Defining the Problem and Background Research**
 
-#### Week 5 (Nov 6-12, 2025)
+- [x] Literature Review
+- [x] Examining Datasets (APKLOT, Grab-Pklot, VME)
+- [x] Problem definition and scope
 
-- [x] Complete dataset preparation and annotation
-- [x] Set up training notebooks and infrastructure
-- [ ] **Train YOLOv11 baseline models**
-  - YOLOv11n (nano): Focus on speed
-  - YOLOv11s (small): Balance speed/accuracy
-  - YOLOv11m (medium): Focus on accuracy
-- [ ] Monitor training progress and metrics
-- [ ] Save best model checkpoints
+### Week 2 (September 29-October 5, 2025)
 
-#### Week 6 (Nov 13-19, 2025)
+**Specify Requirements**
 
-- [ ] **Hyperparameter optimization**
-  - Learning rate tuning (0.001, 0.01, 0.0001)
-  - Batch size experiments (8, 16, 32)
-  - Augmentation strategy testing
-  - Optimizer comparison (Adam, SGD)
-- [ ] **Advanced training techniques**
-  - Test different image sizes (640, 800, 1024)
-  - Experiment with freeze/unfreeze strategies
-  - Try mixed precision training
-- [ ] Document all experimental results
+- [x] Computational Needs assessment
+- [x] Infrastructure planning
+- [x] Tool selection (Google Static Maps API, Roboflow)
 
-#### Week 7 (Nov 20-24, 2025)
+### Week 3 (October 6-12, 2025)
 
-- [ ] **Model refinement**
-  - Fine-tune best performing model
-  - Apply learning rate scheduling
-  - Implement early stopping if needed
-- [ ] **Model comparison**
-  - Compare all trained variants
-  - Analyze speed vs accuracy trade-offs
-  - Select best model for deployment
+**Choose the Best Solution**
 
-### Phase 4: Evaluation & Analysis (Weeks 8-9)
+- [x] Finalize YOLO-Based Approach
+- [x] Data Collection - Fetch and Label Initial dataset
+- [x] Manual annotation via Roboflow
 
-**Timeline:** November 25 - December 8, 2025
+### Week 4 (October 13-19, 2025)
 
-#### Week 8 (Nov 25-Dec 1, 2025)
+**Develop the Solution**
 
-- [ ] **Comprehensive evaluation**
-  - Run test.ipynb on final test set
-  - Calculate all performance metrics
-  - Generate confusion matrices
-  - Analyze per-class performance
-- [ ] **Error analysis**
-  - Identify failure cases
-  - Analyze misclassifications
-  - Document challenging scenarios
-  - Propose improvement strategies
+- [x] Implementation of Image Fetching via Google Static Maps API
+- [x] Setup model training infrastructure
+- [x] Prepare training notebooks
 
-#### Week 9 (Dec 2-8, 2025)
+### Week 5 (October 20-26, 2025)
 
-- [ ] **Results documentation**
-  - Create detailed performance reports
-  - Generate visualization dashboards
-  - Compare results with benchmarks
-  - Write technical analysis
-- [ ] **Occupancy estimation validation**
-  - Test occupancy calculation algorithm
-  - Validate against ground truth
-  - Calculate occupancy accuracy metrics
+**Build Prototype and Begin Testing**
 
-### Phase 5: Documentation & Final Submission (Weeks 10-11)
+- [ ] Train model using small subset of custom and public data
+- [ ] Initial baseline model training
+- [ ] Preliminary testing and validation
 
-**Timeline:** December 9 - December 20, 2025
+### Week 6 (October 27-November 2, 2025)
 
-#### Week 10 (Dec 9-15, 2025)
+**Test and Redesign**
 
-- [ ] **Complete documentation**
-  - Finalize README with actual results
-  - Write technical report
-  - Create user guide
-  - Document API and usage
-- [ ] **Prepare presentation**
-  - Create slides
-  - Prepare demo videos
-  - Practice presentation
-  - Gather visual materials
+- [ ] Evaluate Metrics (mAP@0.5, IoU, Precision, Recall)
+- [ ] Adjust Hyperparameters
+- [ ] Fine-tune model based on initial results
 
-#### Week 11 (Dec 16-20, 2025)
+### Week 7 (November 3-9, 2025)
 
-- [ ] **Final preparations**
-  - Code cleanup and commenting
-  - Final testing and validation
-  - Create requirements.txt
-  - Verify all notebooks run successfully
-- [ ] **Project submission**
-  - Submit all deliverables
-  - Present project results
-  - Deliver final report
+**Expand Dataset and Retrain**
+
+- [ ] Incorporate More Canadian Locations (Walmart parking lots across Lower Mainland, BC)
+- [ ] Augment dataset with diverse conditions
+- [ ] Retrain with expanded dataset
+
+### Week 8 (November 10-16, 2025)
+
+**Integration and Time-Series Extension**
+
+- [ ] Add Occupancy Reporting
+- [ ] Basic Trend Analysis from historical imagery
+- [ ] Generate on-demand reports
+
+### Week 9 (November 17-23, 2025)
+
+**Final Evaluation**
+
+- [ ] Ablation Studies
+- [ ] Robustness Testing (lighting, weather, occlusions)
+- [ ] Performance comparison with baseline approaches
+
+### Week 10 (November 24-30, 2025)
+
+**Documentation and Polish**
+
+- [ ] Prepare Report
+- [ ] Create Demo
+- [ ] Finalize documentation with actual results
+
+### Final Week (December 1-7, 2025)
+
+**Presentation Preparation and Submission**
+
+- [ ] Presentation Preparation
+- [ ] Final project submission
+- [ ] Deliver results and insights
 
 ### Milestones & Deadlines
 
@@ -1382,32 +1412,44 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### Academic Papers
 
-1. **Redmon, J., & Farhadi, A.** (2018). "YOLOv3: An Incremental Improvement." _arXiv preprint arXiv:1804.02767_.
+[1] Y. Yin, H. Wang, D. M. Nguyen, and R. Zimmermann, "A Context-Enriched Satellite Imagery Dataset and an Approach for Parking Lot Detection," in _Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)_, 2022. [Online]. Available: https://openaccess.thecvf.com/content/WACV2022/papers/Yin_A_Context-Enriched_Satellite_Imagery_Dataset_and_an_Approach_for_Parking_WACV_2022_paper.pdf
 
-2. **Jocher, G., et al.** (2023). "Ultralytics YOLOv8: A new state-of-the-art computer vision model." [https://github.com/ultralytics/ultralytics](https://github.com/ultralytics/ultralytics)
+[2] G. Amato, F. Carrara, F. Falchi, C. Gennaro, C. Meghini, and C. Vairo, "Deep Learning for Decentralized Parking Lot Occupancy Detection," _Expert Systems with Applications_, vol. 72, pp. 327-334, 2017. [Online]. Available: https://www.sciencedirect.com/science/article/abs/pii/S095741741630598X
 
-3. **de Almeida, P. R., et al.** (2015). "PKLot–A robust dataset for parking lot classification." _Expert Systems with Applications_, 42(11), 4937-4949.
+[3] S. Drouyer, "Parking Occupancy Estimation on PlanetScope Satellite Images," _Remote Sensing_, vol. 15, no. 11, p. 2806, 2023. [Online]. Available: https://www.mdpi.com/2072-4292/15/11/2806
 
-4. **Amato, G., et al.** (2017). "Deep learning for decentralized parking lot occupancy detection." _Expert Systems with Applications_, 72, 327-334.
+[4] J. Hellekes, E. V. Puttkammer, and F. Fraissinet-Tachet, "Parking Space Inventory from Above: Detection on Aerial Images and Estimation for Unobserved Regions," _IET Intelligent Transport Systems_, vol. 17, no. 5, pp. 997-1012, 2023. [Online]. Available: https://ietresearch.onlinelibrary.wiley.com/doi/full/10.1049/itr2.12322
 
-5. **Lin, T. Y., et al.** (2017). "Focal loss for dense object detection." _Proceedings of the IEEE International Conference on Computer Vision_, 2980-2988.
+[5] T. N. Mundhenk, G. Konjevod, W. A. Sakla, and K. Boakye, "A Large Contextual Dataset for Classification, Detection and Counting of Cars with Deep Learning," in _European Conference on Computer Vision (ECCV)_, 2016. [Online]. Available: https://arxiv.org/abs/1609.04453
 
-6. **Bochkovskiy, A., Wang, C. Y., & Liao, H. Y. M.** (2020). "YOLOv4: Optimal speed and accuracy of object detection." _arXiv preprint arXiv:2004.10934_.
+[6] S. Zambanini, A.-M. Loghin, N. Pfeifer, E. M. Soley, and R. Sablatnig, "Detection of parking cars in stereo satellite images," _Remote Sens._, vol. 12, no. 13, p. 2170, Jul. 2020, doi: 10.3390/rs12132170.
 
-7. **Girshick, R.** (2015). "Fast R-CNN." _Proceedings of the IEEE International Conference on Computer Vision_, 1440-1448.
+[7] G. Pierce and D. Shoup, "Getting the Prices Right: An Evaluation of Pricing Parking by Demand in San Francisco," _Journal of the American Planning Association_, vol. 79, no. 1, pp. 67-81, 2013.
 
 ### Datasets
 
-1. **PKLot Dataset**: [http://web.inf.ufpr.br/vri/databases/parking-lot-database/](http://web.inf.ufpr.br/vri/databases/parking-lot-database/)
+1. **APKLOT Dataset**: 500 global satellite images with over 7,000 polygon annotations for parking areas
+   - Split: 300 training, 100 validation, 101 testing samples
+   - Available on GitHub under MIT license
+   - Used for pre-training to improve model resilience
 
-   - Comprehensive parking lot dataset with weather variations
+2. **Grab-Pklot Dataset**: 1,344 images at 0.3m/pixel with ground-truth annotations
+   - Features roads and buildings context
+   - Split: 1,144 training and 200 testing samples
+   - Supports fusion-based training
 
-2. **CNRPark-EXT Dataset**: [http://cnrpark.it/](http://cnrpark.it/)
+3. **VME Dataset**: For adaptable vehicle detection in satellite imagery
 
-   - Extended parking lot dataset with diverse conditions
-
-3. **Roboflow Universe - Car Park Dataset**: [https://universe.roboflow.com/ay-luu4n/car-park-x0jof](https://universe.roboflow.com/ay-luu4n/car-park-x0jof)
-   - Custom annotated dataset for this project
+4. **Custom Dataset - Car Park v6**: 
+   - Location: Canadian outdoor parking lots (Lower Mainland, British Columbia - Walmart locations)
+   - Images: 120-200 images (1024×1024 pixels, resized to 640×640)
+   - Source: Google Static Maps API and Bing Maps API
+   - Resolution: Up to 0.5m/pixel high-resolution satellite imagery
+   - Manual annotation via Roboflow for vehicle and parking spot bounding boxes
+   - Reflects differences in weather, layouts, and densities
+   - Roboflow Link: [https://universe.roboflow.com/ay-luu4n/car-park-x0jof](https://universe.roboflow.com/ay-luu4n/car-park-x0jof)
+   - Format: JPEG/PNG with annotations
+   - Current version: 171 annotated images (115 train, 38 valid, 18 test)
 
 ### Tools & Frameworks
 
@@ -1424,13 +1466,19 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
    - Computer vision platform for dataset management
 
 4. **OpenCV**: [https://opencv.org/](https://opencv.org/)
-   - Computer vision library
 
-### Related Projects
+   - Computer vision library for preprocessing
 
-1. **ParkingLotOccupancyDetection**: Various implementations on GitHub
-2. **Smart Parking Systems**: Industry solutions and approaches
-3. **YOLO Object Detection Applications**: Real-world use cases
+5. **Albumentations**: Data augmentation library
+   
+   - For handling shadows, weather conditions, and preprocessing
+
+6. **Google Static Maps API**: For retrieving satellite imagery
+
+   - High-resolution satellite imagery source (up to 0.5m/pixel)
+   - Historical overhead perspectives
+
+7. **Bing Maps API**: Alternative satellite imagery source
 
 ---
 
@@ -1697,15 +1745,3 @@ Have questions, suggestions, or want to collaborate?
 - YOLOv11m: ~30-40 FPS (GPU), ~2-4 FPS (CPU)
 
 ---
-
-**Last Updated:** November 6, 2025  
-**Project Status:** 🔄 **Ready for Training Phase**  
-**Completion:** ~40%
-
----
-
-⭐ **If you find this project helpful, please consider giving it a star!** ⭐
-
----
-
-**Made with ❤️ for Deep Learning Course - Fall 2025**
