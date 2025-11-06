@@ -1429,18 +1429,20 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ### Datasets
 
 1. **APKLOT Dataset**: 500 global satellite images with over 7,000 polygon annotations for parking areas
+
    - Split: 300 training, 100 validation, 101 testing samples
    - Available on GitHub under MIT license
    - Used for pre-training to improve model resilience
 
 2. **Grab-Pklot Dataset**: 1,344 images at 0.3m/pixel with ground-truth annotations
+
    - Features roads and buildings context
    - Split: 1,144 training and 200 testing samples
    - Supports fusion-based training
 
 3. **VME Dataset**: For adaptable vehicle detection in satellite imagery
 
-4. **Custom Dataset - Car Park v6**: 
+4. **Custom Dataset - Car Park v6**:
    - Location: Canadian outdoor parking lots (Lower Mainland, British Columbia - Walmart locations)
    - Images: 120-200 images (1024×1024 pixels, resized to 640×640)
    - Source: Google Static Maps API and Bing Maps API
@@ -1470,7 +1472,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
    - Computer vision library for preprocessing
 
 5. **Albumentations**: Data augmentation library
-   
+
    - For handling shadows, weather conditions, and preprocessing
 
 6. **Google Static Maps API**: For retrieving satellite imagery
