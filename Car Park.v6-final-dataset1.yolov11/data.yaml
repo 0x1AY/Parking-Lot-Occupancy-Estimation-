@@ -1,0 +1,13 @@
+train: ../train/images
+val: ../valid/images
+test: ../test/images
+
+nc: 4
+names: ['car', 'lot_boundary', 'objects', 'stall']
+
+roboflow:
+  workspace: ay-luu4n
+  project: car-park-x0jof
+  version: 6
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/ay-luu4n/car-park-x0jof/dataset/6
