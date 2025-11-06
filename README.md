@@ -43,12 +43,12 @@ Urban areas face critical parking management challenges:
 
 ### Solution
 
-This project implements a computer vision-based parking occupancy detection system that:
+This project implements a computer vision-based parking occupancy detection system that analyzes satellite imagery from Google Static Maps API to:
 
 1. **Detects Multiple Objects**: Identifies cars, parking stalls, lot boundaries, and other objects using YOLOv11
 2. **Estimates Occupancy**: Analyzes the spatial relationship between detected cars and parking stalls
-3. **Provides Real-Time Information**: Processes images to give instant occupancy status
-4. **Scales Efficiently**: Leverages existing surveillance camera infrastructure
+3. **Provides Real-Time Information**: Processes satellite images to give instant occupancy status
+4. **Scales Efficiently**: Leverages Google Static Maps API for wide-area coverage
 5. **Offers Visual Insights**: Generates annotated visualizations showing detection results
 
 ---
@@ -74,14 +74,16 @@ These traditional approaches have significant limitations:
 
 ### Advantages of Computer Vision Approach
 
-Our deep learning-based solution offers:
+Our deep learning-based solution using satellite imagery offers:
 
-- ✅ **Cost-Effective**: Utilizes existing surveillance camera infrastructure
-- ✅ **Scalable**: Easy deployment across multiple parking facilities
+- ✅ **Cost-Effective**: Leverages Google Static Maps API without requiring physical camera installation
+- ✅ **Wide Coverage**: Satellite imagery enables monitoring of multiple parking facilities simultaneously
+- ✅ **Scalable**: Easy deployment across different locations through API calls
 - ✅ **Flexible**: Adapts to different parking lot layouts without hardware changes
-- ✅ **Rich Data**: Provides visual context beyond simple occupancy counts
-- ✅ **Low Maintenance**: Software-based solution with minimal hardware dependencies
-- ✅ **Real-Time Processing**: Instant analysis and feedback
+- ✅ **Rich Data**: Provides aerial visual context with consistent overhead perspective
+- ✅ **Low Maintenance**: Software-based solution with no physical hardware dependencies
+- ✅ **Real-Time Processing**: Instant analysis and feedback from API-retrieved imagery
+- ✅ **Geographic Flexibility**: Can analyze parking lots anywhere accessible via Google Maps
 - ✅ **Future-Ready**: Can integrate with smart city infrastructure and IoT systems
 
 ---
@@ -90,12 +92,13 @@ Our deep learning-based solution offers:
 
 ### Custom Labeled Dataset - Car Park v6
 
-We have created a custom-labeled dataset specifically for this project, annotated using Roboflow Universe.
+We have created a custom-labeled dataset specifically for this project using satellite imagery retrieved from Google Static Maps API, annotated using Roboflow Universe. The dataset consists of aerial/overhead views of parking lots, providing a consistent top-down perspective ideal for parking space detection and occupancy analysis.
 
 #### Dataset Information
 
 - **Name**: Car Park - Final Dataset v6
-- **Source**: Custom collected and annotated via Roboflow
+- **Source**: Satellite imagery retrieved using Google Static Maps API, annotated via Roboflow
+- **Image Type**: Satellite/aerial view parking lot images
 - **License**: CC BY 4.0
 - **Roboflow Link**: [https://universe.roboflow.com/ay-luu4n/car-park-x0jof/dataset/6](https://universe.roboflow.com/ay-luu4n/car-park-x0jof/dataset/6)
 - **Export Date**: November 6, 2025 at 4:01 AM GMT
@@ -147,11 +150,13 @@ Car Park.v6-final-dataset1.yolov11/
 
 #### Data Characteristics
 
-- **Real-World Conditions**: Images captured under various lighting conditions
-- **Multiple Perspectives**: Different camera angles and parking lot layouts
+- **Satellite Imagery**: Top-down aerial view from Google Static Maps API
+- **Real-World Conditions**: Images captured under various lighting and weather conditions
+- **Multiple Locations**: Different parking lot layouts and geographical locations
 - **Diverse Scenarios**: Various vehicle types, parking configurations, and occupancy levels
-- **Quality**: High-quality annotations with precise bounding boxes
+- **Quality**: High-quality annotations with precise bounding boxes on satellite imagery
 - **Challenge Factors**: Includes occlusions, shadows, and varying illumination
+- **Aerial Perspective**: Consistent overhead view ideal for parking space analysis
 
 #### Dataset Access
 
