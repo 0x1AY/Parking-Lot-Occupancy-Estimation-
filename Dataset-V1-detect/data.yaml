@@ -1,0 +1,6 @@
+path: /Users/ay/Desktop/deeplearning/Parking lot /Parking-Lot-Occupancy-Estimation-/Dataset-V1-detect
+train: train/images
+val: valid/images
+test: test/images
+nc: 4
+names: ["car", "lot_boundary", "objects", "stall"]
