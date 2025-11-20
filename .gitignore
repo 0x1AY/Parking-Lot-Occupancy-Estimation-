@@ -1,0 +1,35 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# YOLO weights and models
+*.pt
+*.pth
+*.weights
+
+# Large datasets
+Dataset-V1-detect/train/images/
+Dataset-V1-detect/valid/images/
+Dataset-V1-detect/test/images/
+Dataset-V1-detect-upload/
+dataset/
+
+# Training runs (too large, keep only configs)
+parking_runs/*/weights/
+parking_runs/*/train_batch*.jpg
+parking_runs/*/val_batch*.jpg
+
+# Jupyter
+.ipynb_checkpoints
+*checkpoint.ipynb
+
+# Backup files
+*_backup.ipynb
+*_old.ipynb
+train_old_backup.ipynb
