@@ -1,0 +1,92 @@
+[
+  {
+    "location": "01 1000 Gerrard St E Toronto ON M4M 0A5 z20 640x640-2x",
+    "image_file": "walmart_01_1000_Gerrard_St_E_Toronto_ON_M4M_0A5_z20_640x640-2x.png",
+    "total_stalls": 114,
+    "occupied": 86,
+    "vacant": 28,
+    "occupancy_rate": 75.43859649122807,
+    "cars_detected": 80
+  },
+  {
+    "location": "02 900 Dufferin St Toronto ON M6H 4A9 z20 640x640-2x",
+    "image_file": "walmart_02_900_Dufferin_St_Toronto_ON_M6H_4A9_z20_640x640-2x.png",
+    "total_stalls": 127,
+    "occupied": 73,
+    "vacant": 54,
+    "occupancy_rate": 57.48031496062992,
+    "cars_detected": 69
+  },
+  {
+    "location": "03 2525 St Clair Ave W Toronto ON M6N 4Z5 z20 640x640-2x",
+    "image_file": "walmart_03_2525_St_Clair_Ave_W_Toronto_ON_M6N_4Z5_z20_640x640-2x.png",
+    "total_stalls": 191,
+    "occupied": 140,
+    "vacant": 51,
+    "occupancy_rate": 73.29842931937172,
+    "cars_detected": 106
+  },
+  {
+    "location": "04 165 N Queen St Toronto ON M9C 1A7 z20 640x640-2x",
+    "image_file": "walmart_04_165_N_Queen_St_Toronto_ON_M9C_1A7_z20_640x640-2x.png",
+    "total_stalls": 181,
+    "occupied": 84,
+    "vacant": 97,
+    "occupancy_rate": 46.408839779005525,
+    "cars_detected": 54
+  },
+  {
+    "location": "05 2245 Islington Ave Toronto ON M9W 3W6 z20 640x640-2x",
+    "image_file": "walmart_05_2245_Islington_Ave_Toronto_ON_M9W_3W6_z20_640x640-2x.png",
+    "total_stalls": 194,
+    "occupied": 40,
+    "vacant": 154,
+    "occupancy_rate": 20.618556701030926,
+    "cars_detected": 17
+  },
+  {
+    "location": "06 1500 Dundas St E Mississauga ON L4X 1L4 z20 640x640-2x",
+    "image_file": "walmart_06_1500_Dundas_St_E_Mississauga_ON_L4X_1L4_z20_640x640-2x.png",
+    "total_stalls": 169,
+    "occupied": 162,
+    "vacant": 7,
+    "occupancy_rate": 95.85798816568047,
+    "cars_detected": 129
+  },
+  {
+    "location": "07 1305 Lawrence Ave W Toronto ON M6L 1A5 z20 640x640-2x",
+    "image_file": "walmart_07_1305_Lawrence_Ave_W_Toronto_ON_M6L_1A5_z20_640x640-2x.png",
+    "total_stalls": 110,
+    "occupied": 32,
+    "vacant": 78,
+    "occupancy_rate": 29.09090909090909,
+    "cars_detected": 35
+  },
+  {
+    "location": "08 1900 Eglinton Ave E Scarborough ON M1L 2L9 z20 640x640-2x",
+    "image_file": "walmart_08_1900_Eglinton_Ave_E_Scarborough_ON_M1L_2L9_z20_640x640-2x.png",
+    "total_stalls": 188,
+    "occupied": 101,
+    "vacant": 87,
+    "occupancy_rate": 53.72340425531915,
+    "cars_detected": 69
+  },
+  {
+    "location": "09 2202 Jane St North York ON M3M 1A4 z20 640x640-2x",
+    "image_file": "walmart_09_2202_Jane_St_North_York_ON_M3M_1A4_z20_640x640-2x.png",
+    "total_stalls": 160,
+    "occupied": 117,
+    "vacant": 43,
+    "occupancy_rate": 73.125,
+    "cars_detected": 75
+  },
+  {
+    "location": "10 3757 Keele St Toronto ON M3J 1N4 z20 640x640-2x",
+    "image_file": "walmart_10_3757_Keele_St_Toronto_ON_M3J_1N4_z20_640x640-2x.png",
+    "total_stalls": 95,
+    "occupied": 35,
+    "vacant": 60,
+    "occupancy_rate": 36.84210526315789,
+    "cars_detected": 23
+  }
+]

@@ -33,3 +33,20 @@ parking_runs/*/val_batch*.jpg
 *_backup.ipynb
 *_old.ipynb
 train_old_backup.ipynb
+
+# APKLOT cloned repository (too large)
+APKLOT/
+
+# Converted APKLOT dataset (large)
+datasets/apklot/images/
+datasets/apklot/labels/
+datasets/apklot/visualizations/
+
+# Training outputs (large)
+parking_lot_localization/*/weights/
+parking_lot_localization/*/train_batch*.jpg
+parking_lot_localization/*/val_batch*.jpg
+
+# Walmart downloads
+walmart_locations/*.jpg
+walmart_locations/*.png
