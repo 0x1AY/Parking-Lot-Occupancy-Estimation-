@@ -11,6 +11,7 @@
 ## 📋 Table of Contents
 
 - [Project Overview](#project-overview)
+- [Web Application](#web-application)
 - [Motivation](#motivation)
 - [Dataset](#dataset)
 - [Methodology](#methodology)
@@ -19,9 +20,9 @@
 - [Project Structure](#project-structure)
 - [Dependencies](#dependencies)
 - [Progress Summary](#progress-summary)
-- [Preliminary Results](#preliminary-results)
-- [Updated Timeline](#updated-timeline)
-- [Next Steps](#next-steps)
+- [Results & Performance](#results--performance)
+- [Project Timeline](#project-timeline)
+- [Future Enhancements](#future-enhancements)
 - [References](#references)
 
 ---
@@ -31,6 +32,47 @@
 This project develops an automated parking lot occupancy detection and estimation system using deep learning and computer vision techniques. The system leverages state-of-the-art object detection models (YOLOv11) with a **dual-model architecture** to analyze parking lot images and detect multiple objects including cars, parking stalls, lot boundaries, and other objects, ultimately determining the occupancy status of parking spaces.
 
 **Project Status**: ✅ **Production Ready** - Successfully processed 10 Walmart locations across Toronto with dual-model detection architecture achieving **96.3% mAP50** for car detection and **84% mAP50** for multiclass stall detection.
+
+---
+
+## 🌐 Web Application
+
+### Streamlit Interactive Demo
+
+We've built an intuitive **Streamlit web application** that allows anyone to analyze parking occupancy in real-time:
+
+#### 🚀 Quick Start
+
+```bash
+# Launch the web app
+./run_app.sh
+
+# Or manually
+streamlit run app.py
+```
+
+The app will open at `http://localhost:8501`
+
+#### ✨ Features
+
+- **Simple Interface**: Just enter latitude and longitude coordinates
+- **Real-Time Processing**: Watch progress through all 4 pipeline stages
+- **Visual Results**: Color-coded occupancy maps and detailed metrics
+- **Export Options**: Download visualizations and JSON reports
+- **Example Locations**: Pre-configured coordinates for quick testing
+
+#### 📱 Usage
+
+1. **Initialize Pipeline**: Load the dual-model detection system
+2. **Enter Coordinates**: Latitude and longitude of any parking lot
+3. **Analyze**: Click to process and view results in ~30-60 seconds
+4. **Download**: Export visualization and metrics
+
+See [STREAMLIT_README.md](STREAMLIT_README.md) for complete documentation.
+
+---
+
+## 🎯 Project Overview (Continued)
 
 ### Problem Statement
 
@@ -101,19 +143,19 @@ Our deep learning-based solution using satellite imagery offers:
 
 ## 📊 Dataset
 
-### Custom Labeled Dataset - Car Park v6
+### Custom Labeled Dataset - Car Park v8
 
 We have created a custom-labeled dataset specifically for this project using satellite imagery retrieved from Google Static Maps API, annotated using Roboflow Universe. The dataset consists of aerial/overhead views of parking lots, providing a consistent top-down perspective ideal for parking space detection and occupancy analysis.
 
 #### Dataset Information
 
-- **Name**: Car Park - Final Dataset v6
+- **Name**: Car Park - Final Dataset v8
 - **Source**: Satellite imagery retrieved using Google Static Maps API, annotated via Roboflow
 - **Image Type**: Satellite/aerial view parking lot images
 - **License**: CC BY 4.0
-- **Roboflow Link**: [https://universe.roboflow.com/ay-luu4n/car-park-x0jof/dataset/6](https://universe.roboflow.com/ay-luu4n/car-park-x0jof/dataset/6)
+- **Roboflow Link**: [https://universe.roboflow.com/ay-luu4n/car-park-x0jof/dataset/8](https://universe.roboflow.com/ay-luu4n/car-park-x0jof/dataset/8)
 - **Export Date**: November 6, 2025 at 4:01 AM GMT
-- **Total Images**: 171 images
+- **Total Images**: 401 images
 - **Annotation Format**: YOLOv11
 - **Image Resolution**: 640x640 (stretched to maintain consistency)
 
@@ -121,7 +163,7 @@ We have created a custom-labeled dataset specifically for this project using sat
 
 | Split      | Number of Images | Percentage |
 | ---------- | ---------------- | ---------- |
-| Training   | 115              | 67.3%      |
+| Training   | 345              | 67.3%      |
 | Validation | 38               | 22.2%      |
 | Test       | 18               | 10.5%      |
 | **Total**  | **171**          | **100%**   |
@@ -138,12 +180,12 @@ Our dataset includes annotations for four distinct object categories:
 #### Dataset Structure
 
 ```
-Car Park.v6-final-dataset1.yolov11/
+Car Park.v8-final-dataset1.yolov11/
 ├── data.yaml              # Dataset configuration file
 ├── README.dataset.txt     # Dataset documentation
 ├── README.roboflow.txt    # Roboflow export information
 ├── train/
-│   ├── images/           # 115 training images
+│   ├── images/           # 345 training images
 │   └── labels/           # Corresponding YOLO format annotations
 ├── valid/
 │   ├── images/           # 38 validation images
@@ -174,14 +216,14 @@ Car Park.v6-final-dataset1.yolov11/
 The dataset is located in the project directory:
 
 ```bash
-./Car Park.v6-final-dataset1.yolov11/
+./Car Park.v8-final-dataset1.yolov11/
 ```
 
 To use the dataset in your training scripts:
 
 ```python
 # Path configuration
-data_yaml = './Car Park.v6-final-dataset1.yolov11/data.yaml'
+data_yaml = './Car Park.v8-final-dataset1.yolov11/data.yaml'
 ```
 
 #### Class Distribution Analysis
@@ -452,13 +494,13 @@ The project includes Jupyter notebooks optimized for Google Colab:
 1. **Dataset is already included** in the repository:
 
    ```
-   ./Car Park.v6-final-dataset1.yolov11/
+   ./Car Park.v8-final-dataset1.yolov11/
    ```
 
 2. **Verify dataset structure**:
 
    ```bash
-   ls -la "Car Park.v6-final-dataset1.yolov11/"
+   ls -la "Car Park.v8-final-dataset1.yolov11/"
    # Should show: train/, valid/, test/, data.yaml
    ```
 
@@ -569,14 +611,14 @@ Final evaluation on test set:
 
 ```bash
 # Basic training
-yolo detect train data='Car Park.v6-final-dataset1.yolov11/data.yaml' \
+yolo detect train data='Car Park.v8-final-dataset1.yolov11/data.yaml' \
                  model=yolov11n.pt \
                  epochs=100 \
                  imgsz=640 \
                  batch=16
 
 # Training with custom parameters
-yolo detect train data='Car Park.v6-final-dataset1.yolov11/data.yaml' \
+yolo detect train data='Car Park.v8-final-dataset1.yolov11/data.yaml' \
                  model=yolov11s.pt \
                  epochs=150 \
                  imgsz=640 \
@@ -592,7 +634,7 @@ yolo detect train data='Car Park.v6-final-dataset1.yolov11/data.yaml' \
 ```bash
 # Validate trained model
 yolo detect val model=runs/train/parking_detection/weights/best.pt \
-                data='Car Park.v6-final-dataset1.yolov11/data.yaml'
+                data='Car Park.v8-final-dataset1.yolov11/data.yaml'
 ```
 
 #### Inference/Prediction
@@ -631,11 +673,11 @@ yolo export model=runs/train/parking_detection/weights/best.pt format=engine
 from ultralytics import YOLO
 
 # Load model
-model = YOLO('yolov11n.pt')  # or 'path/to/best.pt'
+model = YOLO('yolov11m.pt')  # or 'path/to/best.pt'
 
 # Train
 results = model.train(
-    data='Car Park.v6-final-dataset1.yolov11/data.yaml',
+    data='Car Park.v8-final-dataset1.yolov11/data.yaml',
     epochs=100,
     imgsz=640,
     batch=16
@@ -707,7 +749,7 @@ Parking-Lot-Occupancy-Estimation-/
 ├── LICENSE                             # MIT License
 ├── requirements.txt                    # Python dependencies
 │
-├── Car Park.v6-final-dataset1.yolov11/ # Custom labeled dataset
+├── Car Park.v8-final-dataset1.yolov11/ # Custom labeled dataset
 │   ├── data.yaml                       # Dataset configuration for YOLO
 │   ├── README.dataset.txt              # Dataset information
 │   ├── README.roboflow.txt             # Roboflow export details
@@ -1034,7 +1076,7 @@ Successfully validated on **10 Walmart locations** across Greater Toronto Area:
 
 ### 📈 Dataset Statistics
 
-#### Custom Dataset - Car Park v6
+#### Custom Dataset - Car Park v8
 
 | Split      | Images  | Percentage | Purpose               |
 | ---------- | ------- | ---------- | --------------------- |
@@ -1366,6 +1408,7 @@ python occupancy/batch_process.py
 ```
 
 This will:
+
 1. Process all locations defined in the script
 2. Generate occupancy visualizations for each location
 3. Save JSON metrics for each location
@@ -1469,7 +1512,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 3. **VME Dataset**: For adaptable vehicle detection in satellite imagery
 
-4. **Custom Dataset - Car Park v6**:
+4. **Custom Dataset - Car Park v8**:
    - Location: Canadian outdoor parking lots (Lower Mainland, British Columbia - Walmart locations)
    - Images: 120-200 images (1024×1024 pixels, resized to 640×640)
    - Source: Google Static Maps API and Bing Maps API

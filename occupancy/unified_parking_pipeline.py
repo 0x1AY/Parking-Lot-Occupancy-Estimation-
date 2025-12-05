@@ -60,6 +60,104 @@ class UnifiedParkingPipeline:
         self.stall_model = YOLO(stall_model_path)
         print("✓ Stall detection model loaded")
     
+    def download_satellite_image(self, lat: float, lon: float, 
+                                 zoom: int, size: int, 
+                                 output_path: Path) -> Path:
+        """Download satellite image from Google Static Maps API."""
+        url = (
+            f"https://maps.googleapis.com/maps/api/staticmap?"
+            f"center={lat},{lon}&zoom={zoom}&size={size}x{size}"
+            f"&maptype=satellite&scale=2&key={self.api_key}"
+        )
+        
+        response = requests.get(url)
+        if response.status_code == 200:
+            img = Image.open(BytesIO(response.content))
+            img.save(output_path)
+            return output_path
+        else:
+            raise Exception(f"Failed to download image: {response.status_code}")
+    
+    def process_location(self, location_name: str, lat: float, lon: float,
+                        output_dir: Path,
+                        localization_zoom: int = 19,
+                        tile_zoom: int = 20,
+                        conf_threshold: float = 0.25,
+                        iou_threshold: float = 0.3) -> Dict:
+        """
+        Process a parking location from scratch given lat/lon coordinates.
+        
+        Args:
+            location_name: Name for this location
+            lat: Latitude of parking lot center
+            lon: Longitude of parking lot center
+            output_dir: Directory to save results
+            localization_zoom: Zoom level for initial parking detection
+            tile_zoom: Zoom level for high-res tile downloads
+            conf_threshold: Confidence threshold for detections
+            iou_threshold: IoU threshold for car-to-stall matching
+            
+        Returns:
+            Dictionary with results including occupancy metrics and paths
+        """
+        location_dir = output_dir / location_name
+        location_dir.mkdir(parents=True, exist_ok=True)
+        
+        print("="*70)
+        print(f"PROCESSING LOCATION: {location_name}")
+        print("="*70)
+        print(f"Coordinates: {lat:.6f}, {lon:.6f}")
+        print(f"Output: {location_dir}")
+        
+        # Download wide area image for localization
+        print(f"\n📥 Downloading wide area image (zoom {localization_zoom})...")
+        wide_img_path = location_dir / f"{location_name}_z{localization_zoom}.png"
+        self.download_satellite_image(lat, lon, localization_zoom, 640, wide_img_path)
+        print(f"✓ Downloaded: {wide_img_path.name}")
+        
+        # Run the pipeline
+        results = self.run_pipeline(
+            wide_area_image=wide_img_path,
+            center_lat=lat,
+            center_lon=lon,
+            zoom=localization_zoom,
+            output_dir=location_dir,
+            conf_stage1=0.6,
+            conf_stage3=conf_threshold
+        )
+        
+        if results is None:
+            return {
+                'location_name': location_name,
+                'latitude': lat,
+                'longitude': lon,
+                'total_stalls': 0,
+                'occupied_stalls': 0,
+                'occupancy_rate': 0.0,
+                'cars_detected': 0,
+                'result_path': None,
+                'error': 'No parking areas detected'
+            }
+        
+        # Format results for app
+        summary = results.get('summary', {})
+        result_img_path = location_dir / 'overall_occupancy.jpg'
+        
+        return {
+            'location_name': location_name,
+            'latitude': lat,
+            'longitude': lon,
+            'total_stalls': summary.get('total_stalls', 0),
+            'occupied_stalls': summary.get('occupied_stalls', 0),
+            'empty_stalls': summary.get('empty_stalls', 0),
+            'occupancy_rate': summary.get('occupancy_rate', 0.0),
+            'cars_detected': summary.get('total_cars', 0),
+            'unmatched_cars': summary.get('unmatched_cars', 0),
+            'result_path': str(result_img_path) if result_img_path.exists() else None,
+            'timestamp': results.get('timestamp', ''),
+            'processing_success': True
+        }
+    
     def calculate_meters_per_pixel(self, zoom: int, latitude: float) -> float:
         """Calculate meters per pixel at given zoom and latitude."""
         earth_circumference = 40075016.686
