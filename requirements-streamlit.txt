@@ -1,2 +1,5 @@
 # Streamlit App Requirements
 streamlit>=1.28.0
+
+# Note: Make sure to also install the base requirements:
+# pip install -r requirements.txt
