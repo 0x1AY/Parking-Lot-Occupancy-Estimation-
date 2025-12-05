@@ -1,0 +1,82 @@
+[
+  {
+    "location": "walmart_01_1000_Gerrard_St_E_Toronto_ON_M4M_0A5",
+    "status": "success",
+    "occupancy_rate": 50.0,
+    "total_stalls": 68,
+    "occupied_stalls": 34,
+    "empty_stalls": 34
+  },
+  {
+    "location": "walmart_02_900_Dufferin_St_Toronto_ON_M6H_4A9",
+    "status": "success",
+    "occupancy_rate": 13.79,
+    "total_stalls": 58,
+    "occupied_stalls": 8,
+    "empty_stalls": 50
+  },
+  {
+    "location": "walmart_03_2525_St_Clair_Ave_W_Toronto_ON_M6N_4Z5",
+    "status": "success",
+    "occupancy_rate": 0.0,
+    "total_stalls": 19,
+    "occupied_stalls": 0,
+    "empty_stalls": 19
+  },
+  {
+    "location": "walmart_04_165_N_Queen_St_Toronto_ON_M9C_1A7",
+    "status": "success",
+    "occupancy_rate": 9.09,
+    "total_stalls": 11,
+    "occupied_stalls": 1,
+    "empty_stalls": 10
+  },
+  {
+    "location": "walmart_05_2245_Islington_Ave_Toronto_ON_M9W_3W6",
+    "status": "success",
+    "occupancy_rate": 0.0,
+    "total_stalls": 11,
+    "occupied_stalls": 0,
+    "empty_stalls": 11
+  },
+  {
+    "location": "walmart_06_1500_Dundas_St_E_Mississauga_ON_L4X_1L4",
+    "status": "success",
+    "occupancy_rate": 24.14,
+    "total_stalls": 29,
+    "occupied_stalls": 7,
+    "empty_stalls": 22
+  },
+  {
+    "location": "walmart_07_1305_Lawrence_Ave_W_Toronto_ON_M6L_1A5",
+    "status": "success",
+    "occupancy_rate": 12.77,
+    "total_stalls": 47,
+    "occupied_stalls": 6,
+    "empty_stalls": 41
+  },
+  {
+    "location": "walmart_08_1900_Eglinton_Ave_E_Scarborough_ON_M1L_2L9",
+    "status": "success",
+    "occupancy_rate": 29.03,
+    "total_stalls": 279,
+    "occupied_stalls": 81,
+    "empty_stalls": 198
+  },
+  {
+    "location": "walmart_09_2202_Jane_St_North_York_ON_M3M_1A4",
+    "status": "success",
+    "occupancy_rate": 14.29,
+    "total_stalls": 98,
+    "occupied_stalls": 14,
+    "empty_stalls": 84
+  },
+  {
+    "location": "walmart_10_3757_Keele_St_Toronto_ON_M3J_1N4",
+    "status": "success",
+    "occupancy_rate": 38.86,
+    "total_stalls": 193,
+    "occupied_stalls": 75,
+    "empty_stalls": 118
+  }
+]

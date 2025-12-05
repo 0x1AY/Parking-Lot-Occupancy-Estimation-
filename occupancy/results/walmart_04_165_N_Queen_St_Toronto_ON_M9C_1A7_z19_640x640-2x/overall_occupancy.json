@@ -1,0 +1,11 @@
+{
+  "timestamp": "2025-12-05 00:21:34",
+  "summary": {
+    "total_stalls": 11,
+    "occupied_stalls": 1,
+    "empty_stalls": 10,
+    "total_cars": 1,
+    "unmatched_cars": 0,
+    "occupancy_rate": 9.09
+  }
+}

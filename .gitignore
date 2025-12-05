@@ -1,5 +1,6 @@
 # macOS
 .DS_Store
+~$*
 
 # Python
 __pycache__/
@@ -7,6 +8,12 @@ __pycache__/
 *$py.class
 *.so
 .Python
+
+# Logs
+*.log
+*.txt
+!requirements.txt
+nohup.out
 
 # YOLO weights and models
 *.pt
@@ -32,7 +39,12 @@ parking_runs/*/val_batch*.jpg
 # Backup files
 *_backup.ipynb
 *_old.ipynb
+*_old_backup.ipynb
 train_old_backup.ipynb
+
+# Temporary test files
+test_*.py
+*_test.py
 
 # APKLOT cloned repository (too large)
 APKLOT/

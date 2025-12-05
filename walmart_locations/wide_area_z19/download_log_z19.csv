@@ -1,0 +1,11 @@
+timestamp,site,lat,lon,zoom,size,scale,file,error
+2025-11-29T03:10:24.844995+00:00,walmart_01_1000_Gerrard_St_E_Toronto_ON_M4M_0A5,43.66873352171418,-79.34015786,19,640x640,2,wide_area_z19/walmart_01_1000_Gerrard_St_E_Toronto_ON_M4M_0A5_z19_640x640-2x.png,
+2025-11-29T03:10:25.987996+00:00,walmart_02_900_Dufferin_St_Toronto_ON_M6H_4A9,43.656392,-79.434632,19,640x640,2,wide_area_z19/walmart_02_900_Dufferin_St_Toronto_ON_M6H_4A9_z19_640x640-2x.png,
+2025-11-29T03:10:27.409866+00:00,walmart_03_2525_St_Clair_Ave_W_Toronto_ON_M6N_4Z5,43.667847,-79.486081,19,640x640,2,wide_area_z19/walmart_03_2525_St_Clair_Ave_W_Toronto_ON_M6N_4Z5_z19_640x640-2x.png,
+2025-11-29T03:10:28.748662+00:00,walmart_04_165_N_Queen_St_Toronto_ON_M9C_1A7,43.61813884580267,-79.5555756,19,640x640,2,wide_area_z19/walmart_04_165_N_Queen_St_Toronto_ON_M9C_1A7_z19_640x640-2x.png,
+2025-11-29T03:10:30.090516+00:00,walmart_05_2245_Islington_Ave_Toronto_ON_M9W_3W6,43.71506697576818,-79.55383854,19,640x640,2,wide_area_z19/walmart_05_2245_Islington_Ave_Toronto_ON_M9W_3W6_z19_640x640-2x.png,
+2025-11-29T03:10:31.397867+00:00,walmart_06_1500_Dundas_St_E_Mississauga_ON_L4X_1L4,43.60976353591615,-79.57835677,19,640x640,2,wide_area_z19/walmart_06_1500_Dundas_St_E_Mississauga_ON_L4X_1L4_z19_640x640-2x.png,
+2025-11-29T03:10:32.819265+00:00,walmart_07_1305_Lawrence_Ave_W_Toronto_ON_M6L_1A5,43.708221684457015,-79.47487462,19,640x640,2,wide_area_z19/walmart_07_1305_Lawrence_Ave_W_Toronto_ON_M6L_1A5_z19_640x640-2x.png,
+2025-11-29T03:10:34.173246+00:00,walmart_08_1900_Eglinton_Ave_E_Scarborough_ON_M1L_2L9,43.72732200962143,-79.29501976,19,640x640,2,wide_area_z19/walmart_08_1900_Eglinton_Ave_E_Scarborough_ON_M1L_2L9_z19_640x640-2x.png,
+2025-11-29T03:10:35.407642+00:00,walmart_09_2202_Jane_St_North_York_ON_M3M_1A4,43.722054952568584,-79.51004539,19,640x640,2,wide_area_z19/walmart_09_2202_Jane_St_North_York_ON_M3M_1A4_z19_640x640-2x.png,
+2025-11-29T03:10:36.641046+00:00,walmart_10_3757_Keele_St_Toronto_ON_M3J_1N4,43.758034992722806,-79.48769811,19,640x640,2,wide_area_z19/walmart_10_3757_Keele_St_Toronto_ON_M3J_1N4_z19_640x640-2x.png,
