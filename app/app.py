@@ -17,6 +17,17 @@ import json
 import tempfile
 import time
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+env_path = Path(__file__).parent / '.env'
+if env_path.exists():
+    load_dotenv(env_path)
+else:
+    # Try parent directory
+    env_path = Path(__file__).parent.parent / '.env'
+    if env_path.exists():
+        load_dotenv(env_path)
 
 # Add parent directory's occupancy folder to path
 current_dir = Path(__file__).parent

@@ -17,6 +17,9 @@ pandas>=2.0.0
 # API & Web
 requests>=2.31.0
 
+# Environment Variables
+python-dotenv>=1.0.0
+
 # Utilities
 tqdm>=4.66.0
 pyyaml>=6.0.0
