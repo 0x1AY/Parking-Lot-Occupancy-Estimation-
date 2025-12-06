@@ -131,14 +131,27 @@ with st.sidebar:
     car_model = "parking_runs/yolo11m_parking_augmented2/weights/best.pt"
     stall_model = "parking_runs/yolo11m_multilabel/weights/best.pt"
     
-    # Get API key from environment variable or user input
+    # Get API key from environment variable, streamlit secrets, or user input
     default_api_key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
     
-    # Hidden API key input (use environment variable instead)
-    api_key = default_api_key
+    # Try Streamlit secrets if no environment variable
+    if not default_api_key:
+        try:
+            default_api_key = st.secrets.get("GOOGLE_MAPS_API_KEY", "")
+        except:
+            pass
     
-    if not api_key:
-        st.warning("⚠️ Google Maps API key not configured. Set GOOGLE_MAPS_API_KEY environment variable.")
+    # If still no API key, allow user input
+    if not default_api_key:
+        st.warning("⚠️ API key required for satellite imagery")
+        api_key = st.text_input(
+            "Google Maps API Key",
+            type="password",
+            help="Enter your Google Maps Static API key"
+        )
+    else:
+        api_key = default_api_key
+        st.success("✅ API key configured")
     
     # Hardcoded optimal parameters (not shown to user)
     localization_zoom = 19
