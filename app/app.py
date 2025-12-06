@@ -93,83 +93,55 @@ if 'processing' not in st.session_state:
 st.markdown('<div class="main-header">🅿️ Parking Occupancy Detection System</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Real-time parking occupancy analysis using satellite imagery and deep learning</div>', unsafe_allow_html=True)
 
-# Sidebar - Configuration
+# Sidebar - Configuration (hidden from users)
 with st.sidebar:
-    st.header("⚙️ Configuration")
+    # Hidden configuration - hardcoded paths
+    st.header("ℹ️ About")
+    st.markdown("""
+    **Parking Occupancy Detection**
     
-    st.subheader("Model Settings")
+    🎯 **Dual-Model Architecture**
+    - Car Detection: 96.3% mAP50
+    - Stall Detection: 84% mAP50
     
-    # Model paths
-    localization_model = st.text_input(
-        "Localization Model",
-        value="datasets/apklot/apklot_stage1/weights/best.pt",
-        help="Path to parking lot localization model"
-    )
+    📊 **Processing Pipeline**
+    1. Parking lot localization
+    2. High-res tile download
+    3. Dual model detection
+    4. Occupancy calculation
     
-    car_model = st.text_input(
-        "Car Detection Model",
-        value="parking_runs/yolo11m_parking_augmented2/weights/best.pt",
-        help="High-accuracy car detection model (96.3% mAP50)"
-    )
+    ⚡ **Processing Time**
+    Typically 30-60 seconds per location
+    """)
     
-    stall_model = st.text_input(
-        "Stall Detection Model",
-        value="parking_runs/yolo11m_multilabel/weights/best.pt",
-        help="Multiclass stall detection model (84% mAP50)"
-    )
+    # Hardcoded model paths (not shown to user)
+    # Try multiple possible locations
+    localization_model = "datasets/apklot/apklot_stage1/weights/best.pt"
+    car_model = "parking_runs/yolo11m_parking_augmented2/weights/best.pt"
+    stall_model = "parking_runs/yolo11m_multilabel/weights/best.pt"
     
     # Get API key from environment variable or user input
     default_api_key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
     
-    api_key = st.text_input(
-        "Google Maps API Key",
-        value=default_api_key,
-        type="password",
-        help="Your Google Static Maps API key (or set GOOGLE_MAPS_API_KEY env variable)"
-    )
+    # Hidden API key input (use environment variable instead)
+    api_key = default_api_key
+    
+    if not api_key:
+        st.warning("⚠️ Google Maps API key not configured. Set GOOGLE_MAPS_API_KEY environment variable.")
+    
+    # Hardcoded optimal parameters (not shown to user)
+    localization_zoom = 19
+    tile_zoom = 20
+    conf_threshold = 0.25
+    iou_threshold = 0.3
     
     st.divider()
+    st.markdown("**👤 For Support:**")
+    st.markdown("Contact: Northeastern University")
     
-    st.subheader("Detection Parameters")
-    
-    localization_zoom = st.slider(
-        "Localization Zoom",
-        min_value=17,
-        max_value=20,
-        value=19,
-        help="Zoom level for initial parking lot detection"
-    )
-    
-    tile_zoom = st.slider(
-        "Tile Zoom",
-        min_value=19,
-        max_value=21,
-        value=20,
-        help="Zoom level for high-resolution tile downloads"
-    )
-    
-    conf_threshold = st.slider(
-        "Confidence Threshold",
-        min_value=0.1,
-        max_value=0.9,
-        value=0.25,
-        step=0.05,
-        help="Minimum confidence for detections"
-    )
-    
-    iou_threshold = st.slider(
-        "IoU Threshold",
-        min_value=0.1,
-        max_value=0.9,
-        value=0.3,
-        step=0.05,
-        help="IoU threshold for car-to-stall matching"
-    )
-    
-    st.divider()
-    
-    # Initialize button
-    if st.button("🔄 Initialize Pipeline", type="primary", use_container_width=True):
+# Auto-initialize pipeline on startup (hidden from user)
+if st.session_state.pipeline is None and api_key:
+    if st.sidebar.button("🔄 Initialize System", type="primary", use_container_width=True):
         with st.spinner("Loading models..."):
             try:
                 st.session_state.pipeline = UnifiedParkingPipeline(
