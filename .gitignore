@@ -29,6 +29,11 @@ app/.env
 *.pth
 *.weights
 
+# Exception: Allow trained model files for deployment
+!datasets/apklot/apklot_stage1/weights/best.pt
+!parking_runs/yolo11m_parking_augmented2/weights/best.pt
+!parking_runs/yolo11m_multilabel/weights/best.pt
+
 # Large datasets
 Dataset-V1-detect/train/images/
 Dataset-V1-detect/valid/images/
