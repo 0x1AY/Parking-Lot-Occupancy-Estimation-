@@ -76,7 +76,23 @@ class UnifiedParkingPipeline:
             img.save(output_path)
             return output_path
         else:
-            raise Exception(f"Failed to download image: {response.status_code}")
+            error_msg = f"Failed to download image: HTTP {response.status_code}"
+            if response.status_code == 403:
+                error_msg += (
+                    "\n\nPossible causes:"
+                    "\n1. API key is invalid or expired"
+                    "\n2. Static Maps API is not enabled in Google Cloud Console"
+                    "\n3. API key doesn't have permission for Static Maps API"
+                    "\n4. Billing is not enabled on your Google Cloud project"
+                    "\n\nTo fix:"
+                    "\n1. Go to: https://console.cloud.google.com/google/maps-apis"
+                    "\n2. Enable 'Maps Static API'"
+                    "\n3. Check that billing is enabled"
+                    "\n4. Verify API key restrictions allow this API"
+                )
+            elif response.status_code == 400:
+                error_msg += f"\n\nInvalid request parameters. Response: {response.text[:200]}"
+            raise Exception(error_msg)
     
     def process_location(self, location_name: str, lat: float, lon: float,
                         output_dir: Path,
