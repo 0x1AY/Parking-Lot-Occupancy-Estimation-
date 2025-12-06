@@ -16,6 +16,12 @@ __pycache__/
 !app/requirements-streamlit.txt
 nohup.out
 
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.*.local
+app/.env
+
 # YOLO weights and models
 *.pt
 *.pth
