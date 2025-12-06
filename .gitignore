@@ -15,6 +15,7 @@ __pycache__/
 !requirements.txt
 !app/requirements-streamlit.txt
 !app/packages.txt
+!packages.txt
 nohup.out
 
 # Environment variables (NEVER commit these!)
