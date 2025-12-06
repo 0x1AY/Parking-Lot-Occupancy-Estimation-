@@ -136,23 +136,27 @@ with st.sidebar:
     iou_threshold = 0.3
     
     st.divider()
-    st.markdown("**👤 For Support:**")
-    st.markdown("Contact: Northeastern University")
     
-# Auto-initialize pipeline on startup (hidden from user)
-if st.session_state.pipeline is None and api_key:
-    if st.sidebar.button("🔄 Initialize System", type="primary", use_container_width=True):
-        with st.spinner("Loading models..."):
-            try:
-                st.session_state.pipeline = UnifiedParkingPipeline(
-                    localization_model_path=localization_model,
-                    car_model_path=car_model,
-                    stall_model_path=stall_model,
-                    google_api_key=api_key
-                )
-                st.success("✅ Pipeline initialized successfully!")
-            except Exception as e:
-                st.error(f"❌ Failed to initialize pipeline: {str(e)}")
+    # Initialize button
+    if st.session_state.pipeline is None:
+        if api_key:
+            if st.button("🔄 Initialize System", type="primary", use_container_width=True):
+                with st.spinner("Loading models..."):
+                    try:
+                        st.session_state.pipeline = UnifiedParkingPipeline(
+                            localization_model_path=localization_model,
+                            car_model_path=car_model,
+                            stall_model_path=stall_model,
+                            google_api_key=api_key
+                        )
+                        st.success("✅ Pipeline initialized successfully!")
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"❌ Failed to initialize pipeline: {str(e)}")
+        else:
+            st.error("⚠️ Cannot initialize without API key")
+    else:
+        st.success("✅ System Ready")
 
 # Main content area
 if st.session_state.pipeline is None:
