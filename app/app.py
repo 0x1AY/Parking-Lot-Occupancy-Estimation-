@@ -10,6 +10,7 @@ Usage:
 
 import streamlit as st
 import sys
+import os
 from pathlib import Path
 from PIL import Image
 import json
@@ -117,11 +118,14 @@ with st.sidebar:
         help="Multiclass stall detection model (84% mAP50)"
     )
     
+    # Get API key from environment variable or user input
+    default_api_key = os.environ.get('GOOGLE_MAPS_API_KEY', '')
+    
     api_key = st.text_input(
         "Google Maps API Key",
-        value="AIzaSyCZWUlRCSb7WxHNBWtMifWRW25GOWfbous",
+        value=default_api_key,
         type="password",
-        help="Your Google Static Maps API key"
+        help="Your Google Static Maps API key (or set GOOGLE_MAPS_API_KEY env variable)"
     )
     
     st.divider()
