@@ -17,8 +17,10 @@ import tempfile
 import time
 from datetime import datetime
 
-# Add occupancy directory to path
-sys.path.insert(0, str(Path(__file__).parent / "occupancy"))
+# Add parent directory's occupancy folder to path
+current_dir = Path(__file__).parent
+parent_dir = current_dir.parent
+sys.path.insert(0, str(parent_dir / "occupancy"))
 from unified_parking_pipeline import UnifiedParkingPipeline
 
 # Page configuration
@@ -274,6 +276,7 @@ else:
         
         st.session_state.processing = True
         st.session_state.results = None
+        st.session_state.result_image = None
         
         # Create temporary output directory
         with tempfile.TemporaryDirectory() as temp_dir:
@@ -312,6 +315,11 @@ else:
                     iou_threshold=iou_threshold
                 )
                 processing_time = time.time() - start_time
+                
+                # Load and store the image in session state before temp dir is deleted
+                if results.get('result_path') and Path(results['result_path']).exists():
+                    result_img = Image.open(results['result_path'])
+                    st.session_state.result_image = result_img
                 
                 # Stage 4: Complete
                 status_text.text("✅ Stage 4/4: Processing complete!")
@@ -376,11 +384,13 @@ else:
         st.divider()
         st.subheader("🗺️ Occupancy Visualization")
         
-        # Check if visualization image exists
-        result_path = results.get('result_path')
-        if result_path and Path(result_path).exists():
-            occupancy_img = Image.open(result_path)
-            st.image(occupancy_img, caption="Parking Occupancy Map (Green=Vacant, Red=Occupied)", use_container_width=True)
+        # Display image from session state
+        if hasattr(st.session_state, 'result_image') and st.session_state.result_image is not None:
+            st.image(
+                st.session_state.result_image, 
+                caption="Parking Occupancy Map (Green=Vacant, Red=Occupied)", 
+                width="stretch"
+            )
         else:
             st.warning("⚠️ Visualization image not found")
         
@@ -421,15 +431,21 @@ else:
         col1, col2 = st.columns(2)
         
         with col1:
-            if result_path and Path(result_path).exists():
-                with open(result_path, 'rb') as f:
-                    st.download_button(
-                        label="⬇️ Download Visualization",
-                        data=f,
-                        file_name=f"{location_name}_occupancy.jpg",
-                        mime="image/jpeg",
-                        use_container_width=True
-                    )
+            # Download visualization from session state
+            if hasattr(st.session_state, 'result_image') and st.session_state.result_image is not None:
+                # Convert PIL Image to bytes
+                import io
+                img_byte_arr = io.BytesIO()
+                st.session_state.result_image.save(img_byte_arr, format='JPEG')
+                img_byte_arr = img_byte_arr.getvalue()
+                
+                st.download_button(
+                    label="⬇️ Download Visualization",
+                    data=img_byte_arr,
+                    file_name=f"{location_name}_occupancy.jpg",
+                    mime="image/jpeg",
+                    width="stretch"
+                )
         
         with col2:
             json_data = json.dumps(results, indent=2)
@@ -438,7 +454,7 @@ else:
                 data=json_data,
                 file_name=f"{location_name}_report.json",
                 mime="application/json",
-                use_container_width=True
+                width="stretch"
             )
 
 # Footer

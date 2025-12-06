@@ -13,6 +13,7 @@ __pycache__/
 *.log
 *.txt
 !requirements.txt
+!app/requirements-streamlit.txt
 nohup.out
 
 # YOLO weights and models
@@ -44,6 +45,7 @@ train_old_backup.ipynb
 
 # Temporary test files
 test_*.py
+!app/test_streamlit_pipeline.py
 *_test.py
 
 # APKLOT cloned repository (too large)
@@ -62,3 +64,4 @@ parking_lot_localization/*/val_batch*.jpg
 # Walmart downloads
 walmart_locations/*.jpg
 walmart_locations/*.png
+venv/

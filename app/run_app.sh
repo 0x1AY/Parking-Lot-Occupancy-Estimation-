@@ -5,6 +5,9 @@ echo "🅿️  Parking Occupancy Detection - Streamlit App"
 echo "================================================"
 echo ""
 
+# Navigate to parent directory
+cd "$(dirname "$0")/.."
+
 # Check Python version
 if ! command -v python3 &> /dev/null; then
     echo "❌ Python 3 is not installed. Please install Python 3.8 or higher."
@@ -33,27 +36,21 @@ echo ""
 echo "📥 Installing dependencies..."
 pip install -q --upgrade pip
 pip install -q -r requirements.txt
-pip install -q -r requirements-streamlit.txt
+pip install -q -r app/requirements-streamlit.txt
 echo "✓ Dependencies installed"
 
 # Check if models exist
 echo ""
-echo "🔍 Checking models..."
-
+echo "🔍 Checking for trained models..."
 MODELS_OK=true
 
-if [ ! -f "datasets/apklot/apklot_stage1/weights/best.pt" ]; then
-    echo "❌ Localization model not found: datasets/apklot/apklot_stage1/weights/best.pt"
+if [ ! -f "weights/stall_model.pt" ]; then
+    echo "   ⚠️  stall_model.pt not found"
     MODELS_OK=false
 fi
 
-if [ ! -f "parking_runs/yolo11m_parking_augmented2/weights/best.pt" ]; then
-    echo "❌ Car detection model not found: parking_runs/yolo11m_parking_augmented2/weights/best.pt"
-    MODELS_OK=false
-fi
-
-if [ ! -f "parking_runs/yolo11m_multilabel/weights/best.pt" ]; then
-    echo "❌ Stall detection model not found: parking_runs/yolo11m_multilabel/weights/best.pt"
+if [ ! -f "weights/vehicle_model.pt" ]; then
+    echo "   ⚠️  vehicle_model.pt not found"
     MODELS_OK=false
 fi
 
@@ -74,4 +71,4 @@ echo ""
 echo "   Press Ctrl+C to stop the server"
 echo ""
 
-streamlit run app.py
+streamlit run app/app.py
