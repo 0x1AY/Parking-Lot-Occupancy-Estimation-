@@ -21,8 +21,8 @@ This period, I successfully completed and deployed a production-ready parking lo
   - Dataset: 1,109 annotated satellite images
   - Single-class detection (vehicles only)
   - Inference: 14.7ms per image
-  
 - **Model 2 - Stall Detection (YOLOv11m):**
+
   - Achieved 84% mAP50 on parking stall detection
   - Multi-class: occupied stalls, vacant stalls, handicap spaces
   - Dataset: Same satellite imagery with stall annotations
@@ -37,10 +37,12 @@ This period, I successfully completed and deployed a production-ready parking lo
 **B. Comprehensive Batch Processing & Validation**
 
 Successfully processed 10 major retail locations across Greater Toronto Area:
+
 - Walmart Gerrard St, Dufferin St, St Clair Ave, Islington Ave, Lawrence Ave
 - Walmart Pickering, Brampton, Scarborough, Ajax, Markham
 
 **Aggregate Results:**
+
 - **813 parking stalls detected** across all locations
 - **226 occupied stalls** (27.8% average occupancy)
 - **587 vacant stalls** (72.2% availability)
@@ -50,6 +52,7 @@ Successfully processed 10 major retail locations across Greater Toronto Area:
 **C. Streamlit Web Application Deployment**
 
 Developed and deployed production web interface:
+
 - **Real-time coordinate input:** Users enter lat/lon for any parking lot
 - **4-stage progress tracking:** Visual feedback during processing
 - **Interactive dashboard:** Metrics, visualization, JSON export
@@ -58,6 +61,7 @@ Developed and deployed production web interface:
 - **Cloud deployment:** Fully deployed on Streamlit Cloud
 
 **Technical Features:**
+
 - Auto-initializes with environment variables or Streamlit secrets
 - Fallback manual API key input
 - Session state management for image persistence
@@ -70,8 +74,8 @@ Developed and deployed production web interface:
   - Localization model: 43MB
   - Car detection model: 39MB
   - Stall detection model: 39MB
-  
 - **Dependencies:** Complete requirements management
+
   - System packages: `libgl1-mesa-glx`, `libglib2.0-0` (OpenCV support)
   - Python packages: PyTorch, Ultralytics, OpenCV-headless, Streamlit
   - Environment management: python-dotenv for API key configuration
@@ -209,11 +213,9 @@ Developed and deployed production web interface:
   - Download images at different times of day
   - Identify peak hours and trends
   - Historical occupancy database
-  
 - **Predictive Analytics:** Machine learning for occupancy forecasting
   - Predict availability based on time/day/season
   - Recommend optimal parking times
-  
 - **Multi-Class Detection:** Expand beyond binary occupancy
   - Vehicle type classification (car, truck, motorcycle)
   - Parking violations detection
@@ -250,16 +252,19 @@ Developed and deployed production web interface:
 ### Immediate Next Steps (If Continuing):
 
 1. **Performance Benchmarking:**
+
    - Measure inference time across different hardware
    - Optimize model quantization for faster inference
    - Profile memory usage and optimize
 
 2. **Error Handling Improvements:**
+
    - Comprehensive logging system
    - Retry logic for API failures
    - Graceful degradation for partial failures
 
 3. **Testing Suite:**
+
    - Unit tests for core functions
    - Integration tests for pipeline
    - End-to-end testing automation
@@ -275,21 +280,24 @@ Developed and deployed production web interface:
 
 **Total Development Time:** ~20 hours (training, pipeline, web app, deployment)  
 **Model Training Time:** ~3 hours total (all models on GPU)  
-**Lines of Code Written:** ~2,500+ (pipeline, web app, utilities, tests)  
+**Lines of Code Written:** ~2,500+ (pipeline, web app, utilities, tests)
 
 **Performance Metrics:**
+
 - **Car Detection:** 96.3% mAP50, 14.7ms inference
 - **Stall Detection:** 84% mAP50
 - **Batch Processing:** 10/10 locations (100% success rate)
 - **Total Detection:** 813 stalls, 226 occupied (27.8% occupancy)
 
 **Deployment:**
+
 - **Live Web App:** Deployed on Streamlit Cloud
 - **Repository:** GitHub with complete source code
 - **Models:** All 3 models included (121MB total)
 - **Documentation:** 4 comprehensive guides (1,500+ lines)
 
 **Technology Stack:**
+
 - **Framework:** Ultralytics YOLOv11m
 - **Backend:** Python 3.12, PyTorch 2.0+
 - **Frontend:** Streamlit 1.28+
@@ -301,16 +309,19 @@ Developed and deployed production web interface:
 ## Technical Resources
 
 **Models (All Included in Repository):**
+
 - Localization: `datasets/apklot/apklot_stage1/weights/best.pt` (43 MB)
 - Car Detection: `parking_runs/yolo11m_parking_augmented2/weights/best.pt` (39 MB)
 - Stall Detection: `parking_runs/yolo11m_multilabel/weights/best.pt` (39 MB)
 
 **Key Scripts:**
+
 - Pipeline: `occupancy/unified_parking_pipeline.py`
 - Web App: `app/app.py` (467 lines)
 - Batch Processing: `occupancy/batch_process_walmart_locations.py`
 
 **Documentation:**
+
 - Main README: `README.md` (comprehensive project overview)
 - Deployment: `DEPLOYMENT.md` (cloud deployment guide)
 - Web App: `app/README.md` (quick start)
@@ -318,11 +329,13 @@ Developed and deployed production web interface:
 - User Guide: `app/STREAMLIT_USER_GUIDE.md`
 
 **Test Results:**
+
 - Batch results: 10 locations, 813 stalls, 27.8% occupancy
 - Processing time: 30-60 seconds per location
 - Success rate: 100% (no failures)
 
 **Live Demo:**
+
 - Web App URL: [Streamlit Cloud deployment]
 - Repository: https://github.com/0x1AY/Parking-Lot-Occupancy-Estimation-
 
@@ -333,6 +346,7 @@ Developed and deployed production web interface:
 The system is fully functional, deployed, and ready for real-world use. All core features have been implemented, tested, and documented. The web application provides an intuitive interface for non-technical users, while the underlying pipeline maintains high accuracy and reliability.
 
 **Key Achievements:**
+
 - Production-grade dual-model architecture (96.3% + 84% mAP50)
 - Validated on 813 real parking stalls across 10 locations
 - Fully deployed web application on cloud infrastructure

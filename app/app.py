@@ -293,16 +293,19 @@ else:
             
             try:
                 # Stage 1: Localization
+                st.info("**🔍 Stage 1:** Locating parking lot boundaries in the satellite image")
                 status_text.text("🔍 Stage 1/4: Detecting parking lot areas...")
                 progress_bar.progress(0.25)
                 time.sleep(0.5)
                 
                 # Stage 2: Download tiles
+                st.info("**📥 Stage 2:** Downloading high-resolution image tiles covering the parking area")
                 status_text.text("📥 Stage 2/4: Downloading high-resolution tiles...")
                 progress_bar.progress(0.50)
                 time.sleep(0.5)
                 
                 # Stage 3: Detection
+                st.info("**🚗 Stage 3:** Running AI models to detect vehicles and parking stall boundaries")
                 status_text.text("🚗 Stage 3/4: Detecting cars and parking stalls...")
                 progress_bar.progress(0.75)
                 
@@ -392,8 +395,8 @@ else:
         if hasattr(st.session_state, 'result_image') and st.session_state.result_image is not None:
             st.image(
                 st.session_state.result_image, 
-                caption="Parking Occupancy Map (Green=Vacant, Red=Occupied)", 
-                width="stretch"
+                caption="Parking Occupancy Map (Green=Occupied, Blue=Vacant)", 
+                use_container_width=True
             )
         else:
             st.warning("⚠️ Visualization image not found")
@@ -443,12 +446,18 @@ else:
                 st.session_state.result_image.save(img_byte_arr, format='JPEG')
                 img_byte_arr = img_byte_arr.getvalue()
                 
+                # Add timestamp to filename
+                timestamp = results.get('timestamp', datetime.now().strftime('%Y%m%d_%H%M%S'))
+                if ' ' in timestamp:
+                    # Convert from "2025-12-07 14:30:45" to "20251207_143045"
+                    timestamp = timestamp.replace('-', '').replace(':', '').replace(' ', '_')
+                
                 st.download_button(
                     label="⬇️ Download Visualization",
                     data=img_byte_arr,
-                    file_name=f"{location_name}_occupancy.jpg",
+                    file_name=f"{location_name}_{timestamp}_occupancy.jpg",
                     mime="image/jpeg",
-                    width="stretch"
+                    use_container_width=True
                 )
         
         with col2:
@@ -458,7 +467,7 @@ else:
                 data=json_data,
                 file_name=f"{location_name}_report.json",
                 mime="application/json",
-                width="stretch"
+                use_container_width=True
             )
 
 # Footer
@@ -467,6 +476,6 @@ st.markdown("""
 <div style="text-align: center; color: #666; font-size: 0.9rem; padding: 1rem;">
     <p><strong>Parking Occupancy Detection System</strong> | Powered by YOLOv11 Dual-Model Architecture</p>
     <p>Car Detection: 96.3% mAP50 | Stall Detection: 84% mAP50</p>
-    <p>© 2025 Northeastern University | Deep Learning Project</p>
+    <p>© 2025 Northeastern University | IE7615 Deep Learning Project by Aminu Yiwere & Olatunji Olagundoye</p>
 </div>
 """, unsafe_allow_html=True)

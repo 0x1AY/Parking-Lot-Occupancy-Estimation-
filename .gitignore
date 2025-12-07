@@ -16,7 +16,23 @@ __pycache__/
 !app/requirements-streamlit.txt
 !app/packages.txt
 !packages.txt
+!biweekly_checkin_report_nov28.txt
 nohup.out
+
+# Reports and documentation (exclude from repository)
+*report*.md
+*report*.docx
+*report*.pdf
+*Report*.md
+*Report*.docx
+*Report*.pdf
+Biweekly*.md
+Biweekly*.docx
+Biweekly*.pdf
+!README.md
+!DEPLOYMENT.md
+!PROJECT_STRUCTURE.md
+!CLEANUP_SUMMARY.md
 
 # Environment variables (NEVER commit these!)
 .env

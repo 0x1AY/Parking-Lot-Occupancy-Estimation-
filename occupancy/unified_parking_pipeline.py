@@ -587,18 +587,18 @@ class UnifiedParkingPipeline:
         print("\nGenerating visualization...")
         vis = stitched.copy()
         
-        # Draw empty stalls (blue)
+        # Draw vacant stalls (blue)
         for stall_idx in empty_stalls:
             x1, y1, x2, y2, _ = all_stalls[stall_idx]
-            cv2.rectangle(vis, (x1, y1), (x2, y2), (255, 100, 0), 2)
+            cv2.rectangle(vis, (x1, y1), (x2, y2), (255, 100, 0), 2)  # Blue in BGR
         
         # Draw occupied stalls (green) and cars (red)
         for match in occupied_stalls:
             stall = match['stall_box']
             car = match['car_box']
             
-            cv2.rectangle(vis, (stall[0], stall[1]), (stall[2], stall[3]), (0, 255, 0), 2)
-            cv2.rectangle(vis, (car[0], car[1]), (car[2], car[3]), (0, 0, 255), 2)
+            cv2.rectangle(vis, (stall[0], stall[1]), (stall[2], stall[3]), (0, 255, 0), 2)  # Green in BGR
+            cv2.rectangle(vis, (car[0], car[1]), (car[2], car[3]), (0, 0, 255), 2)  # Red in BGR
         
         # Draw unmatched cars (yellow)
         for car_idx in unmatched_cars:
@@ -683,12 +683,12 @@ class UnifiedParkingPipeline:
         return inter_area / union_area if union_area > 0 else 0
     
     def _add_text_overlay(self, img, total_stalls, occupied, empty, rate):
-        """Add text overlay with statistics."""
+        """Add text overlay with statistics and color-coded text."""
         h, w = img.shape[:2]
         
         # Background
-        cv2.rectangle(img, (20, 20), (min(700, w-20), 220), (0, 0, 0), -1)
-        cv2.rectangle(img, (20, 20), (min(700, w-20), 220), (255, 255, 255), 3)
+        cv2.rectangle(img, (20, 20), (min(700, w-20), 250), (0, 0, 0), -1)
+        cv2.rectangle(img, (20, 20), (min(700, w-20), 250), (255, 255, 255), 3)
         
         font = cv2.FONT_HERSHEY_SIMPLEX
         y = 70
@@ -697,12 +697,24 @@ class UnifiedParkingPipeline:
         y += 50
         cv2.putText(img, f"Total Stalls: {total_stalls}", (40, y), font, 1.0, (255, 255, 255), 2)
         y += 45
-        cv2.putText(img, f"Occupied: {occupied}  Empty: {empty}", (40, y), font, 1.0, 
-                   (0, 255, 0) if occupied < total_stalls else (0, 165, 255), 2)
+        
+        # Color-coded text: Red for occupied (BGR: 0,0,255), Blue for vacant (BGR: 255,100,0)
+        cv2.putText(img, f"Occupied: ", (40, y), font, 1.0, (255, 255, 255), 2)
+        cv2.putText(img, f"{occupied}", (195, y), font, 1.0, (0, 0, 255), 2)  # Red text
+        cv2.putText(img, f"  Vacant: ", (280, y), font, 1.0, (255, 255, 255), 2)
+        cv2.putText(img, f"{empty}", (420, y), font, 1.0, (255, 100, 0), 2)  # Blue text
         y += 50
         
+        # Occupancy rate with dynamic color
         color = (0, 255, 0) if rate < 80 else (0, 165, 255) if rate < 95 else (0, 0, 255)
         cv2.putText(img, f"Occupancy: {rate:.1f}%", (40, y), font, 1.3, color, 3)
+        y += 40
+        
+        # Legend at bottom
+        legend_y = y
+        cv2.putText(img, "Legend:", (40, legend_y), font, 0.7, (255, 255, 255), 2)
+        cv2.putText(img, "Green = Occupied", (140, legend_y), font, 0.7, (0, 255, 0), 2)
+        cv2.putText(img, "Blue = Vacant", (380, legend_y), font, 0.7, (255, 100, 0), 2)
     
     def run_pipeline(self, wide_area_image: Path, center_lat: float, center_lon: float,
                      zoom: int = 19, output_dir: Path = None,
