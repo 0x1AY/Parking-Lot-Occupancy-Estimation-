@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_27f35b37f74b06243b3388812669b096 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@3.0.0/Control.FullScreen.css"/>
+    <script src="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ljagis/leaflet-measure@2.1.7/dist/leaflet-measure.min.css"/>
+</head>
+<body>
+    
+    
+<div style="position: fixed; 
+            top: 10px; left: 50px; width: 520px; height: 90px; 
+            background-color: white; border:2px solid #2C3E50; z-index:9999; 
+            border-radius:10px; padding: 10px; box-shadow: 2px 2px 6px rgba(0,0,0,0.3);">
+    <h3 style="margin: 0; color: #2C3E50; text-align: center;">
+        Geographic Distribution of Test Locations
+    </h3>
+    <p style="margin: 5px 0; font-size: 11pt; color: #34495E; text-align: center;">
+        Greater Toronto Area (GTA), Ontario, Canada
+    </p>
+    <p style="margin: 0; font-size: 10pt; color: #7D3C98; text-align: center; font-style: italic;">
+        10 Walmart Locations | 813 Parking Stalls Analyzed | 100% Success Rate
+    </p>
+</div>
+    
+<div style="position: fixed; 
+            bottom: 30px; right: 10px; width: 280px; 
+            background-color: white; border:2px solid #1E8449; z-index:9999; 
+            border-radius:10px; padding: 12px; box-shadow: 2px 2px 6px rgba(0,0,0,0.3);">
+    <h4 style="margin: 0 0 8px 0; color: #145A32; border-bottom: 2px solid #1E8449; padding-bottom: 5px;">
+        Validation Statistics
+    </h4>
+    <table style="width: 100%; font-size: 9pt; color: #2C3E50;">
+        <tr><td><b>Total Stalls:</b></td><td style="text-align: right; color: #27AE60;"><b>813</b></td></tr>
+        <tr><td><b>Occupied:</b></td><td style="text-align: right; color: #E74C3C;"><b>226 (27.8%)</b></td></tr>
+        <tr><td><b>Vacant:</b></td><td style="text-align: right; color: #3498DB;"><b>587 (72.2%)</b></td></tr>
+        <tr><td><b>Processing Time:</b></td><td style="text-align: right;">30-60 sec/loc</td></tr>
+        <tr><td><b>Success Rate:</b></td><td style="text-align: right; color: #27AE60;"><b>100%</b></td></tr>
+    </table>
+    <hr style="margin: 8px 0; border: 1px solid #A9DFBF;">
+    <p style="margin: 5px 0; font-size: 8pt; color: #555;">
+        <b>Coverage:</b> 0.1483° lat × 0.2833° lon<br>
+        <b>Area:</b> ~16.5 km (N-S) × ~24.1 km (E-W)
+    </p>
+</div>
+    
+            <div class="folium-map" id="map_27f35b37f74b06243b3388812669b096" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_27f35b37f74b06243b3388812669b096 = L.map(
+                "map_27f35b37f74b06243b3388812669b096",
+                {
+                    center: [43.6851575518571, -79.471627965],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+            L.control.scale().addTo(map_27f35b37f74b06243b3388812669b096);
+
+            
+
+        
+    
+            var tile_layer_b7e427f90e6a7f8468d9c40c9f3655f0 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_b7e427f90e6a7f8468d9c40c9f3655f0.addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var tile_layer_764a0847b1d30fc4e8f149d112ae2c49 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_764a0847b1d30fc4e8f149d112ae2c49.addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var tile_layer_f8188c8c54aba14e80f462728fed5668 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f8188c8c54aba14e80f462728fed5668.addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var circle_marker_912cf3aabe667a45832ef6ee275d071e = L.circleMarker(
+                [43.66873352171418, -79.34015786],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "red", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_ee106ef5fdc6a1700cf2cf3dec40e9cd = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_ad6548ac69b6e464b7fa42131fdd6d34 = $(`<div id="html_ad6548ac69b6e464b7fa42131fdd6d34" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 1: 1000 Gerrard St E         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 1000 Gerrard St E, Toronto</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.668734°<br>            Longitude: -79.340158°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_ee106ef5fdc6a1700cf2cf3dec40e9cd.setContent(html_ad6548ac69b6e464b7fa42131fdd6d34);
+            
+        
+
+        circle_marker_912cf3aabe667a45832ef6ee275d071e.bindPopup(popup_ee106ef5fdc6a1700cf2cf3dec40e9cd)
+        ;
+
+        
+    
+    
+            circle_marker_912cf3aabe667a45832ef6ee275d071e.bindTooltip(
+                `<div>
+                     1000 Gerrard St E
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_00cf313d4805387a2b7d819ace3a6872 = L.marker(
+                [43.66873352171418, -79.34015786],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_7b6ee7227c9ef01ec60f862f42c9b2bc = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    1\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid red;\"\u003e\n                    1000 Gerrard St E\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_00cf313d4805387a2b7d819ace3a6872.setIcon(div_icon_7b6ee7227c9ef01ec60f862f42c9b2bc);
+            
+    
+            var circle_marker_d1bb5a32f6ac4a004d933920c0d26f59 = L.circleMarker(
+                [43.656392, -79.434632],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "blue", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_e921907c8c5949fa23677e7141fd5479 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_30f61cf36488daf14a867e758b8075c2 = $(`<div id="html_30f61cf36488daf14a867e758b8075c2" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 2: 900 Dufferin St         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 900 Dufferin St, Toronto</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.656392°<br>            Longitude: -79.434632°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_e921907c8c5949fa23677e7141fd5479.setContent(html_30f61cf36488daf14a867e758b8075c2);
+            
+        
+
+        circle_marker_d1bb5a32f6ac4a004d933920c0d26f59.bindPopup(popup_e921907c8c5949fa23677e7141fd5479)
+        ;
+
+        
+    
+    
+            circle_marker_d1bb5a32f6ac4a004d933920c0d26f59.bindTooltip(
+                `<div>
+                     900 Dufferin St
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_4f5e5cb4a35a8c9765b13f731716e739 = L.marker(
+                [43.656392, -79.434632],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_781c5436d43623c9179e9ff907a1b1cf = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    2\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid blue;\"\u003e\n                    900 Dufferin St\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_4f5e5cb4a35a8c9765b13f731716e739.setIcon(div_icon_781c5436d43623c9179e9ff907a1b1cf);
+            
+    
+            var circle_marker_5ba3df77453c1ed1878b16fe46747297 = L.circleMarker(
+                [43.667847, -79.486081],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "green", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_29e35f165d2f541466451f48128205ff = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_13fbbd8d5d645b9c635e06a3dea79c85 = $(`<div id="html_13fbbd8d5d645b9c635e06a3dea79c85" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 3: 2525 St Clair Ave W         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 2525 St Clair Ave W, Toronto</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.667847°<br>            Longitude: -79.486081°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_29e35f165d2f541466451f48128205ff.setContent(html_13fbbd8d5d645b9c635e06a3dea79c85);
+            
+        
+
+        circle_marker_5ba3df77453c1ed1878b16fe46747297.bindPopup(popup_29e35f165d2f541466451f48128205ff)
+        ;
+
+        
+    
+    
+            circle_marker_5ba3df77453c1ed1878b16fe46747297.bindTooltip(
+                `<div>
+                     2525 St Clair Ave W
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c60c59cc7d2dc53bcaa88ce996abedf4 = L.marker(
+                [43.667847, -79.486081],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_a9a7d0867335c6b976934bb7ca0c80d9 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    3\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid green;\"\u003e\n                    2525 St Clair Ave W\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_c60c59cc7d2dc53bcaa88ce996abedf4.setIcon(div_icon_a9a7d0867335c6b976934bb7ca0c80d9);
+            
+    
+            var circle_marker_21f3a38e17fc765079fff91185fc28f0 = L.circleMarker(
+                [43.61813884580267, -79.5555756],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "purple", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_2d3a55e6c842100cf032b2d99f840638 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_778c9bbdec2c3d39503991a3516c4014 = $(`<div id="html_778c9bbdec2c3d39503991a3516c4014" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 4: 165 N Queen St         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 165 N Queen St, Toronto</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.618139°<br>            Longitude: -79.555576°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_2d3a55e6c842100cf032b2d99f840638.setContent(html_778c9bbdec2c3d39503991a3516c4014);
+            
+        
+
+        circle_marker_21f3a38e17fc765079fff91185fc28f0.bindPopup(popup_2d3a55e6c842100cf032b2d99f840638)
+        ;
+
+        
+    
+    
+            circle_marker_21f3a38e17fc765079fff91185fc28f0.bindTooltip(
+                `<div>
+                     165 N Queen St
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_423c61af1e3d52edf9378a40d656d66f = L.marker(
+                [43.61813884580267, -79.5555756],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_980d3e9ba33ebb7c452ae6814664ec4f = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    4\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid purple;\"\u003e\n                    165 N Queen St\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_423c61af1e3d52edf9378a40d656d66f.setIcon(div_icon_980d3e9ba33ebb7c452ae6814664ec4f);
+            
+    
+            var circle_marker_98eab1087508d44616aa2f138e940fc3 = L.circleMarker(
+                [43.71506697576818, -79.55383854],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "orange", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_58fd65cd7a7ed324bffee7978843c8cd = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_14b38fc09f9cf4b9b091141aa35bc432 = $(`<div id="html_14b38fc09f9cf4b9b091141aa35bc432" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 5: 2245 Islington Ave         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 2245 Islington Ave, Toronto</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.715067°<br>            Longitude: -79.553839°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_58fd65cd7a7ed324bffee7978843c8cd.setContent(html_14b38fc09f9cf4b9b091141aa35bc432);
+            
+        
+
+        circle_marker_98eab1087508d44616aa2f138e940fc3.bindPopup(popup_58fd65cd7a7ed324bffee7978843c8cd)
+        ;
+
+        
+    
+    
+            circle_marker_98eab1087508d44616aa2f138e940fc3.bindTooltip(
+                `<div>
+                     2245 Islington Ave
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b969f11095a9d1f19a433d061fe7312c = L.marker(
+                [43.71506697576818, -79.55383854],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_9b88bf6089f1038da8d4ba3fc8807621 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    5\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid orange;\"\u003e\n                    2245 Islington Ave\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_b969f11095a9d1f19a433d061fe7312c.setIcon(div_icon_9b88bf6089f1038da8d4ba3fc8807621);
+            
+    
+            var circle_marker_e1103e2c4633bbf5e8cf9b6df06845d9 = L.circleMarker(
+                [43.60976353591615, -79.57835677],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkred", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_414a60bc868478e2cd82623e28f45f95 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_bfe5caff83eccd8775defdd617fed1d3 = $(`<div id="html_bfe5caff83eccd8775defdd617fed1d3" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 6: 1500 Dundas St E         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 1500 Dundas St E, Mississauga</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.609764°<br>            Longitude: -79.578357°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_414a60bc868478e2cd82623e28f45f95.setContent(html_bfe5caff83eccd8775defdd617fed1d3);
+            
+        
+
+        circle_marker_e1103e2c4633bbf5e8cf9b6df06845d9.bindPopup(popup_414a60bc868478e2cd82623e28f45f95)
+        ;
+
+        
+    
+    
+            circle_marker_e1103e2c4633bbf5e8cf9b6df06845d9.bindTooltip(
+                `<div>
+                     1500 Dundas St E
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b74bb72f4e0a44bc6f15e6c5bc1b3ded = L.marker(
+                [43.60976353591615, -79.57835677],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_20d5a295e767cd2d5b9fc8a6cbde5b93 = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    6\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid darkred;\"\u003e\n                    1500 Dundas St E\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_b74bb72f4e0a44bc6f15e6c5bc1b3ded.setIcon(div_icon_20d5a295e767cd2d5b9fc8a6cbde5b93);
+            
+    
+            var circle_marker_9667cebfeac3523dd87635685005fe6c = L.circleMarker(
+                [43.708221684457015, -79.47487462],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "lightred", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_76cd9d7597d2db4dae42f9c4b92a9c71 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_8017e9a4d510da51564e426097f30488 = $(`<div id="html_8017e9a4d510da51564e426097f30488" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 7: 1305 Lawrence Ave W         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 1305 Lawrence Ave W, Toronto</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.708222°<br>            Longitude: -79.474875°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_76cd9d7597d2db4dae42f9c4b92a9c71.setContent(html_8017e9a4d510da51564e426097f30488);
+            
+        
+
+        circle_marker_9667cebfeac3523dd87635685005fe6c.bindPopup(popup_76cd9d7597d2db4dae42f9c4b92a9c71)
+        ;
+
+        
+    
+    
+            circle_marker_9667cebfeac3523dd87635685005fe6c.bindTooltip(
+                `<div>
+                     1305 Lawrence Ave W
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_9992eff1b5f4e3d88f1fe18647e408bb = L.marker(
+                [43.708221684457015, -79.47487462],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_1d405f2eb1da5671f8b0b34929b8720f = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    7\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid lightred;\"\u003e\n                    1305 Lawrence Ave W\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_9992eff1b5f4e3d88f1fe18647e408bb.setIcon(div_icon_1d405f2eb1da5671f8b0b34929b8720f);
+            
+    
+            var circle_marker_0cb8c8527d971e702482465961c481b2 = L.circleMarker(
+                [43.72732200962143, -79.29501976],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "beige", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_ea138e39107ae923249891d29ac6abf8 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_65c7f57ef4f235b9183f83f6a93bcfc6 = $(`<div id="html_65c7f57ef4f235b9183f83f6a93bcfc6" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 8: 1900 Eglinton Ave E         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 1900 Eglinton Ave E, Scarborough</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.727322°<br>            Longitude: -79.295020°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_ea138e39107ae923249891d29ac6abf8.setContent(html_65c7f57ef4f235b9183f83f6a93bcfc6);
+            
+        
+
+        circle_marker_0cb8c8527d971e702482465961c481b2.bindPopup(popup_ea138e39107ae923249891d29ac6abf8)
+        ;
+
+        
+    
+    
+            circle_marker_0cb8c8527d971e702482465961c481b2.bindTooltip(
+                `<div>
+                     1900 Eglinton Ave E
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_39afbeb918ba6e2a1d5537b6526ee3f6 = L.marker(
+                [43.72732200962143, -79.29501976],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_53e9c199de264df97d6d3fae4749e6db = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    8\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid beige;\"\u003e\n                    1900 Eglinton Ave E\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_39afbeb918ba6e2a1d5537b6526ee3f6.setIcon(div_icon_53e9c199de264df97d6d3fae4749e6db);
+            
+    
+            var circle_marker_8047b3e72e826640f825811276a17238 = L.circleMarker(
+                [43.722054952568584, -79.51004539],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkblue", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_ca72b42abc1fa8f084730aaefb3b91cf = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_c865bea0cce22e55dd7b2a19486d1e96 = $(`<div id="html_c865bea0cce22e55dd7b2a19486d1e96" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 9: 2202 Jane St         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 2202 Jane St, North York</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.722055°<br>            Longitude: -79.510045°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_ca72b42abc1fa8f084730aaefb3b91cf.setContent(html_c865bea0cce22e55dd7b2a19486d1e96);
+            
+        
+
+        circle_marker_8047b3e72e826640f825811276a17238.bindPopup(popup_ca72b42abc1fa8f084730aaefb3b91cf)
+        ;
+
+        
+    
+    
+            circle_marker_8047b3e72e826640f825811276a17238.bindTooltip(
+                `<div>
+                     2202 Jane St
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_fbbc5f7d41bb39a325daaeabbdcd0f67 = L.marker(
+                [43.722054952568584, -79.51004539],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_bc0afcb332b8100ec825743eb17f224f = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    9\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid darkblue;\"\u003e\n                    2202 Jane St\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_fbbc5f7d41bb39a325daaeabbdcd0f67.setIcon(div_icon_bc0afcb332b8100ec825743eb17f224f);
+            
+    
+            var circle_marker_f67d86d06b60e6f26d4083901336303b = L.circleMarker(
+                [43.758034992722806, -79.48769811],
+                {"bubblingMouseEvents": true, "color": "#2C3E50", "dashArray": null, "dashOffset": null, "fill": true, "fillColor": "darkgreen", "fillOpacity": 0.85, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "opacity": 1.0, "radius": 15, "stroke": true, "weight": 3}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+        var popup_774cd0304d5f7e951712038a34bf72a2 = L.popup({
+  "maxWidth": 320,
+});
+
+        
+            
+                var html_753207e3e25309d4f015a30a703b2817 = $(`<div id="html_753207e3e25309d4f015a30a703b2817" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 280px;">         <h4 style="color: #2C3E50; margin-bottom: 10px; border-bottom: 2px solid #3498DB; padding-bottom: 5px;">             Location 10: 3757 Keele St         </h4>         <p style="margin: 5px 0;"><b>Full Address:</b> 3757 Keele St, Toronto</p>         <p style="margin: 5px 0;"><b>Coordinates:</b><br>            Latitude: 43.758035°<br>            Longitude: -79.487698°</p>         <p style="margin: 5px 0; color: #27AE60; font-weight: bold;">             <b>Status:</b> Processed Successfully ✓         </p>         <hr style="margin: 8px 0;">         <p style="margin: 5px 0; font-size: 9pt; color: #7D3C98;">             <b>Detection Models:</b> YOLOv11m Dual Architecture<br>             <b>Processing Time:</b> 30-60 seconds         </p>     </div>     </div>`)[0];
+                popup_774cd0304d5f7e951712038a34bf72a2.setContent(html_753207e3e25309d4f015a30a703b2817);
+            
+        
+
+        circle_marker_f67d86d06b60e6f26d4083901336303b.bindPopup(popup_774cd0304d5f7e951712038a34bf72a2)
+        ;
+
+        
+    
+    
+            circle_marker_f67d86d06b60e6f26d4083901336303b.bindTooltip(
+                `<div>
+                     3757 Keele St
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_baa3bcd60910cafd6a67b5e5d5652605 = L.marker(
+                [43.758034992722806, -79.48769811],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var div_icon_30b1b63ef7ad92054d3f66f24abc1b9c = L.divIcon({
+  "html": "\n            \u003cdiv style=\"text-align: center;\"\u003e\n                \u003cdiv style=\"font-size: 11pt; font-weight: bold; color: white; \n                            text-shadow: 1px 1px 3px black;\"\u003e\n                    10\n                \u003c/div\u003e\n                \u003cdiv style=\"font-size: 8.5pt; font-weight: bold; color: #2C3E50; \n                            background-color: white; padding: 3px 8px; \n                            border-radius: 4px; margin-top: 25px;\n                            box-shadow: 2px 2px 4px rgba(0,0,0,0.3); \n                            white-space: nowrap; border: 1.5px solid darkgreen;\"\u003e\n                    3757 Keele St\n                \u003c/div\u003e\n            \u003c/div\u003e\n        ",
+  "className": "empty",
+});
+        
+    
+                marker_baa3bcd60910cafd6a67b5e5d5652605.setIcon(div_icon_30b1b63ef7ad92054d3f66f24abc1b9c);
+            
+    
+            var marker_60e386abce771fca7b1babc04d167c76 = L.marker(
+                [43.6851575518571, -79.471627965],
+                {
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var icon_c478ca459694e5e337ca90f704f67e66 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "star",
+  "prefix": "fa",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_dd314f9f5d0cd3dce30495e415da5588 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_14a130d3b8dfb202029ddf0b7e7bfb58 = $(`<div id="html_14a130d3b8dfb202029ddf0b7e7bfb58" style="width: 100.0%; height: 100.0%;">Geographic Center<br>Lat: 43.685158°<br>Lon: -79.471628°</div>`)[0];
+                popup_dd314f9f5d0cd3dce30495e415da5588.setContent(html_14a130d3b8dfb202029ddf0b7e7bfb58);
+            
+        
+
+        marker_60e386abce771fca7b1babc04d167c76.bindPopup(popup_dd314f9f5d0cd3dce30495e415da5588)
+        ;
+
+        
+    
+    
+            marker_60e386abce771fca7b1babc04d167c76.bindTooltip(
+                `<div>
+                     Geographic Center
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+                marker_60e386abce771fca7b1babc04d167c76.setIcon(icon_c478ca459694e5e337ca90f704f67e66);
+            
+    
+            var layer_control_4ecfc710ebed8a500944467be53a8d34_layers = {
+                base_layers : {
+                    "openstreetmap" : tile_layer_b7e427f90e6a7f8468d9c40c9f3655f0,
+                    "CartoDB Positron" : tile_layer_764a0847b1d30fc4e8f149d112ae2c49,
+                    "CartoDB Dark" : tile_layer_f8188c8c54aba14e80f462728fed5668,
+                },
+                overlays :  {
+                },
+            };
+            let layer_control_4ecfc710ebed8a500944467be53a8d34 = L.control.layers(
+                layer_control_4ecfc710ebed8a500944467be53a8d34_layers.base_layers,
+                layer_control_4ecfc710ebed8a500944467be53a8d34_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+
+        
+    
+            L.control.fullscreen(
+                {
+  "position": "topright",
+  "title": "Expand map",
+  "titleCancel": "Exit fullscreen",
+  "forceSeparateButton": true,
+}
+            ).addTo(map_27f35b37f74b06243b3388812669b096);
+        
+    
+            var measure_control_5c5e66d7a4d04acc7a1b8029397da4f6 = new L.Control.Measure(
+                {
+  "position": "topleft",
+  "primaryLengthUnit": "kilometers",
+  "secondaryLengthUnit": "miles",
+  "primaryAreaUnit": "sqmeters",
+  "secondaryAreaUnit": "acres",
+});
+            map_27f35b37f74b06243b3388812669b096.addControl(measure_control_5c5e66d7a4d04acc7a1b8029397da4f6);
+
+            // Workaround for using this plugin with Leaflet>=1.8.0
+            // https://github.com/ljagis/leaflet-measure/issues/171
+            L.Control.Measure.include({
+                _setCaptureMarkerIcon: function () {
+                    // disable autopan
+                    this._captureMarker.options.autoPanOnFocus = false;
+                    // default function
+                    this._captureMarker.setIcon(
+                        L.divIcon({
+                            iconSize: this._map.getSize().multiplyBy(2)
+                        })
+                    );
+                },
+            });
+
+        
+</script>
+</html>
