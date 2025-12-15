@@ -19,6 +19,37 @@ __pycache__/
 !biweekly_checkin_report_nov28.txt
 nohup.out
 
+# Notebooks and docs (exclude for minimal repo)
+*.ipynb
+docs/
+app/README.md
+app/STREAMLIT_README.md
+app/STREAMLIT_USER_GUIDE.md
+occupancy/README.md
+occupancy/PROJECT_REPORT.md
+occupancy/DUAL_MODEL_IMPLEMENTATION.md
+
+# IDE and local env
+venv/
+.vscode/
+*.code-workspace
+
+# Datasets and downloads (retain only model weights)
+Dataset-V1-*/
+dataset/
+data/
+walmart_locations/
+datasets/apklot/images/
+datasets/apklot/labels/
+datasets/apklot/visualizations/
+occupancy/results/
+
+# Trained models keep only specific weights
+yolo*.pt
+!datasets/apklot/apklot_stage1/weights/best.pt
+!parking_runs/yolo11m_parking_augmented2/weights/best.pt
+!parking_runs/yolo11m_multilabel/weights/best.pt
+
 # Reports and documentation (exclude from repository)
 *report*.md
 *report*.docx

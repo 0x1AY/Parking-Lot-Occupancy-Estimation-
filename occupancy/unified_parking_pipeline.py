@@ -126,7 +126,7 @@ class UnifiedParkingPipeline:
         print(f"Output: {location_dir}")
         
         # Download wide area image for localization
-        print(f"\n📥 Downloading wide area image (zoom {localization_zoom})...")
+        print(f"\n Downloading wide area image (zoom {localization_zoom})...")
         wide_img_path = location_dir / f"{location_name}_z{localization_zoom}.png"
         self.download_satellite_image(lat, lon, localization_zoom, 640, wide_img_path)
         print(f"✓ Downloaded: {wide_img_path.name}")
@@ -737,7 +737,7 @@ class UnifiedParkingPipeline:
         )
         
         if combined_bbox is None:
-            print("\n❌ No parking areas detected")
+            print("\n No parking areas detected")
             return None
         
         # Stage 2: Download tiles
@@ -746,7 +746,7 @@ class UnifiedParkingPipeline:
         )
         
         if not tiles:
-            print("\n❌ No tiles downloaded")
+            print("\n No tiles downloaded")
             return None
         
         # Stage 3: Detect objects
